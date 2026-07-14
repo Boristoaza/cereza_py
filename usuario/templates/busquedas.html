@@ -1,0 +1,264 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscar Amigos | Cereza</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+  <style>
+    body {
+      background-color: #121212;
+      color: #f1f1f1;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .header-web {
+      background-color: #121212;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      height: 60px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 0 24px;
+    }
+
+    .search-bar-container {
+      background-color: rgba(255, 255, 255, 0.06);
+      border: 1px solid transparent;
+      border-radius: 92px;
+      padding: 0 16px;
+      width: 360px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+    }
+    .search-bar-container:focus-within {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .search-input {
+      background: none;
+      border: none;
+      color: #fff;
+      outline: none;
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+    .sidebar-web {
+      width: 240px;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      bottom: 0;
+      padding: 20px 8px 20px 24px;
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .nav-link-web {
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+    .nav-link-web:hover {
+      background-color: rgba(255, 255, 255, 0.04);
+      color: #fff;
+    }
+
+    .main-search-content {
+      margin-left: 240px;
+      margin-top: 60px;
+      padding: 32px 60px;
+    }
+
+    .search-container-box {
+      max-width: 650px;
+    }
+
+    .user-search-card {
+      background-color: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      transition: background-color 0.15s ease-in-out;
+      border-radius: 8px;
+    }
+    .user-search-card:hover {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    .search-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: #222;
+    }
+
+    .tiktok-btn-primary {
+      background-color: #fe2c55;
+      color: #fff;
+      font-weight: 600;
+      padding: 6px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: background-color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tiktok-btn-primary:hover {
+      background-color: #e11d43;
+      color: #fff;
+    }
+
+    .tiktok-btn-secondary {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-weight: 600;
+      padding: 6px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+    }
+    .tiktok-btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .web-input {
+      background-color: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      border-radius: 6px;
+    }
+    .web-input:focus {
+      background-color: rgba(255, 255, 255, 0.06);
+      color: white;
+      border-color: #fe2c55;
+      box-shadow: none;
+    }
+    .modal-custom-dark {
+      background-color: #1e1e1e;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header-web d-flex align-items-center justify-content-between">
+    <a href="{% url 'feed:feed' %}" class="d-flex align-items-center text-decoration-none text-white fw-bold fs-4">
+      🍒Cereza
+    </a>
+
+    <form action="{% url 'buscador:buscar' %}" method="GET">
+      <div class="search-bar-container">
+        <input type="text" class="search-input" placeholder="Buscar creadores o posts..." name="busqueda" id="busqueda" value="{{ request.GET.busqueda }}" required>
+        <button type="submit" class="bg-transparent border-0 text-white opacity-50"><i class="bi bi-search"></i></button>
+      </div>
+    </form>
+
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn btn-outline-light rounded-1 px-3 btn-sm fw-bold border-secondary text-white" style="background-color: rgba(255,255,255,0.04);" data-bs-toggle="modal" data-bs-target="#modalPublicar">
+        <i class="bi bi-plus-lg me-1"></i> Cargar
+      </button>
+      <form action="{% url 'usuario:logout' %}" method="post" class="m-0">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm btn-outline-danger px-3 rounded-1 fw-bold" style="font-size: 0.85rem;">Cerrar sesión</button>
+      </form>
+    </div>
+  </header>
+
+  <aside class="sidebar-web d-none d-md-block">
+    <nav class="d-flex flex-column gap-1">
+      <a href="{% url 'feed:feed' %}" class="nav-link-web"><i class="bi bi-house-door"></i> Para ti</a>
+      <a href="#" class="nav-link-web"><i class="bi bi-people"></i> Siguiendo</a>
+      <a href="#" class="nav-link-web"><i class="bi bi-compass"></i> Explorar</a>
+    </nav>
+  </aside>
+
+  <main class="main-search-content">
+    <div class="search-container-box">
+
+      <h4 class="fw-bold mb-4 px-2" style="font-size: 1.4rem; letter-spacing: -0.3px;">Resultados de búsqueda</h4>
+
+      <div class="d-flex flex-column gap-1">
+        {% for i in busqueda %}
+          <div class="user-search-card p-3 d-flex align-items-center justify-content-between">
+
+            <div class="d-flex align-items-center gap-3">
+              {% if i.avatar %}
+                <img src="/media/{{ i.avatar }}" class="search-avatar" alt="Avatar">
+              {% else %}
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde" class="search-avatar" alt="Avatar por defecto">
+              {% endif %}
+
+              <div>
+                <h6 class="mb-0 fw-bold text-white" style="font-size: 1.05rem;">@{{ i.usuario }}</h6>
+                <p class="mb-0 text-secondary small">ID de perfil: #{{ i.id }}</p>
+              </div>
+            </div>
+
+            <a href="/ver_perfil/{{ i.id }}" class="tiktok-btn-primary">
+              <i class="bi bi-person-fill"></i> Ver Perfil
+            </a>
+
+          </div>
+        {% empty %}
+          <div class="text-center py-5 opacity-50">
+            <i class="bi bi-people fs-1"></i>
+            <p class="mt-3">No se encontraron usuarios que coincidan con la búsqueda.</p>
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </main>
+
+  <div class="modal fade" id="modalPublicar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-white p-3 modal-custom-dark">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold">Cargar contenido nuevo</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{% url 'publicacion:publicar' %}" method="post" enctype="multipart/form-data">
+          <div class="modal-body">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label text-secondary small fw-bold">Descripción / Leyenda</label>
+              <textarea class="form-control web-input" name="descripcion" rows="3" placeholder="¿Qué estás pensando hoy? #parati" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-secondary small fw-bold">Seleccionar archivo (Foto/Video)</label>
+              <input type="file" class="form-control web-input" name="publicacion" required>
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="submit" class="btn tiktok-btn-primary w-100">Publicar Contenido</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+
+</html>

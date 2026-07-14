@@ -1,0 +1,489 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ perfil.nombre_usuario }} (@{{ perfil.nombre_usuario }}) | Cereza</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- Iconos de Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+  <style>
+    body {
+      background-color: #121212;
+      color: #f1f1f1;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* BARRA SUPERIOR (FIXED NAVBAR) */
+    .header-web {
+      background-color: #121212;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      height: 60px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 0 24px;
+    }
+
+    .search-bar-container {
+      background-color: rgba(255, 255, 255, 0.06);
+      border: 1px solid transparent;
+      border-radius: 92px;
+      padding: 0 16px;
+      width: 360px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+    }
+    .search-bar-container:focus-within {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .search-input {
+      background: none;
+      border: none;
+      color: #fff;
+      outline: none;
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+    /* BARRA LATERAL FIJA */
+    .sidebar-web {
+      width: 240px;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      bottom: 0;
+      padding: 20px 8px 20px 24px;
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .nav-link-web {
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+    .nav-link-web:hover {
+      background-color: rgba(255, 255, 255, 0.04);
+      color: #fff;
+    }
+    .nav-link-web.active {
+      color: #fe2c55;
+    }
+
+    /* CONTENEDOR PRINCIPAL DE CONTENIDO */
+    .main-profile-content {
+      margin-left: 240px;
+      margin-top: 60px;
+      padding: 0 0 32px 0; /* Quitamos padding superior e izquierdo para controlar el banner full width */
+    }
+
+    /* CONTENEDOR DEL BANNER (FLOTA LIBRE EN LA PARTE SUPERIOR) */
+    .profile-mini-banner {
+      height: 130px;
+      width: 100%;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .profile-mini-banner::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background: linear-gradient(to top, #121212, transparent);
+    }
+
+    /* CONTENEDOR DE LA INFORMACIÓN DE USUARIO (DENTRO DEL MARGEN) */
+    .profile-info-wrapper {
+      padding: 0 60px;
+      max-width: 1000px;
+    }
+
+    .profile-header-info {
+      display: flex;
+      align-items: flex-end;
+      gap: 24px;
+      margin-top: -45px; /* Sigue montándose sobre el banner pero al aire libre */
+      position: relative;
+      z-index: 2;
+      margin-bottom: 24px;
+    }
+
+    .profile-avatar-big {
+      width: 116px;
+      height: 116px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #121212; /* Mantiene el corte de anillo sobre el banner */
+      background-color: #121212;
+    }
+
+    .profile-title-area h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+      letter-spacing: -0.5px;
+    }
+    .profile-title-area h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 0;
+    }
+
+    /* CONTADORES (Siguiendo, Seguidores, Videos) */
+    .counts-container {
+      display: flex;
+      gap: 24px;
+    }
+    .count-item {
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .count-item strong {
+      color: #fff;
+      font-size: 1.15rem;
+    }
+
+    .bio-text {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 550px;
+      line-height: 1.5;
+    }
+
+    /* BOTONES DE ACCIÓN */
+    .tiktok-btn-primary {
+      background-color: #fe2c55;
+      color: #fff;
+      font-weight: 600;
+      padding: 6px 36px;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      transition: background-color 0.2s;
+    }
+    .tiktok-btn-primary:hover { background-color: #e11d43; color: #fff; }
+
+    .tiktok-btn-secondary {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-weight: 600;
+      padding: 6px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+    }
+    .tiktok-btn-secondary:hover { background-color: rgba(255, 255, 255, 0.15); color: #fff; }
+
+    /* PESTAÑAS (Videos, Favoritos, Likes) */
+    .profile-tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      margin-top: 28px;
+      margin-bottom: 24px;
+      gap: 32px;
+    }
+    .tab-item-web {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.5);
+      padding-bottom: 8px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+    .tab-item-web.active {
+      color: #fff;
+      border-color: #fff;
+    }
+
+    /* GRID DE VIDEOS */
+    .videos-grid-tiktok {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 24px 16px;
+    }
+
+    .tiktok-video-card {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #000;
+      aspect-ratio: 3 / 4;
+      cursor: pointer;
+    }
+    .tiktok-video-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .tiktok-video-card:hover img {
+      transform: scale(1.04);
+    }
+
+    .video-card-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 8px 8px 8px;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .video-title-caption {
+      margin-top: 6px;
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.9);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      line-height: 1.3;
+    }
+
+    /* ESTILOS DE COMPONENTES DE FORMULARIO PARA MODALES */
+    .web-input {
+      background-color: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      border-radius: 6px;
+    }
+    .web-input:focus {
+      background-color: rgba(255, 255, 255, 0.06);
+      color: white;
+      border-color: #fe2c55;
+      box-shadow: none;
+    }
+    .modal-custom-dark {
+      background-color: #1e1e1e;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER / TOP NAV -->
+  <header class="header-web d-flex align-items-center justify-content-between">
+    <a href="#" class="d-flex align-items-center text-decoration-none text-white fw-bold fs-4">
+      <i class="bi bi-layers-fill text-danger me-2"></i>Cereza
+    </a>
+
+    <!-- Buscador Integrado -->
+    <form action="{% url 'buscador:buscar' %}" method="GET">
+      <div class="search-bar-container">
+        <input type="text" class="search-input" placeholder="Buscar creadores o posts..." name="busqueda" id="busqueda" required>
+        <button type="submit" class="bg-transparent border-0 text-white opacity-50"><i class="bi bi-search"></i></button>
+      </div>
+    </form>
+
+    <!-- Botones del extremo derecho -->
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn btn-outline-light rounded-1 px-3 btn-sm fw-bold border-secondary text-white" style="background-color: rgba(255,255,255,0.04);" data-bs-toggle="modal" data-bs-target="#modalPublicar">
+        <i class="bi bi-plus-lg me-1"></i> Cargar
+      </button>
+      {% if request.user == perfil.usuario %}
+        <button class="btn tiktok-btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarPerfil">
+          <i class="bi bi-pencil-square me-1"></i> Editar Perfil
+        </button>
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- SIDEBAR / MENÚ LATERAL -->
+  <aside class="sidebar-web d-none d-md-block">
+    <nav class="d-flex flex-column gap-1">
+      <a href="#" class="nav-link-web active"><i class="bi bi-house-door-fill"></i> Para ti</a>
+      <a href="#" class="nav-link-web"><i class="bi bi-people"></i> Siguiendo</a>
+      <a href="#" class="nav-link-web"><i class="bi bi-compass"></i> Explorar</a>
+    </nav>
+  </aside>
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <main class="main-profile-content">
+
+    <!-- BANNER DISCRETO (Al aire libre) -->
+    {% if perfil.banner %}
+      <div class="profile-mini-banner" style="background-image: url('/media/{{ perfil.banner }}');"></div>
+    {% else %}
+      <div class="profile-mini-banner" style="background: linear-gradient(90deg, #1f1f2e, #121212);"></div>
+    {% endif %}
+
+    <!-- CONTENEDOR DE INFORMACIÓN DE PERFIL (Con paddings correctos) -->
+    <div class="profile-info-wrapper">
+
+      <!-- Avatar y Nombres superpuestos en el banner -->
+      <section class="profile-header-info">
+        {% if perfil.avatar %}
+          <img src="/media/{{ perfil.avatar }}" class="profile-avatar-big" alt="Avatar de {{ perfil.nombre_usuario }}">
+        {% else %}
+          <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde" class="profile-avatar-big" alt="Avatar por defecto">
+        {% endif %}
+
+        <div class="profile-title-area">
+          <h1 class="mb-0">{{ perfil.nombre_usuario }}</h1>
+          <h2>@{{ perfil.nombre_usuario }}</h2>
+        </div>
+      </section>
+
+      <!-- Métricas (Siguiendo, Seguidores, Videos) -->
+      <section class="counts-container mb-3">
+        <div class="count-item"><strong>{{ seguidos.count|default:"0" }}</strong> Siguiendo</div>
+        <div class="count-item"><strong>{{ seguidores.count|default:"0" }}</strong> Seguidores</div>
+        <div class="count-item"><strong>{{ posts.count|default:"0" }}</strong> Videos</div>
+      </section>
+
+      <!-- Biografía -->
+      <section class="bio-text mb-4">
+        <p class="m-0 text-secondary">{{ perfil.biografia|default:"Ninguna biografía configurada todavía." }}</p>
+      </section>
+
+      <!-- Botón de Acción -->
+      <div class="action-buttons-area">
+        {% if request.user != perfil.usuario %}
+          <form action="{% url 'seguir:seguir' %}" method="POST" class="d-inline">
+            {% csrf_token %}
+            <input type="hidden" name="usuario" value="{{ perfil.usuario }}">
+            <button type="submit" class="tiktok-btn-primary">Seguir</button>
+          </form>
+        {% else %}
+          <form action="{% url 'usuario:logout' %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-outline-danger px-3 rounded-1 fw-bold" style="font-size: 0.85rem;">Cerrar sesión</button>
+          </form>
+        {% endif %}
+      </div>
+
+      <!-- PESTAÑAS DE NAVEGACIÓN -->
+      <nav class="profile-tabs">
+        <div class="tab-item-web active"><i class="bi bi-grid-3x3-gap-fill me-1"></i> Videos</div>
+        <div class="tab-item-web"><i class="bi bi-lock-fill me-1"></i> Favoritos</div>
+        <div class="tab-item-web"><i class="bi bi-heart me-1"></i> Con me gusta</div>
+      </nav>
+
+      <!-- GRID DE VIDEOS -->
+      <section class="videos-grid-tiktok">
+        {% for i in posts %}
+          <div class="video-card-container">
+            <div class="tiktok-video-card shadow-sm">
+              {% if i.post_original %}
+                {% for img in i.post_original.pack_set.all %}
+                  {% if forloop.first %}<img src="{{ img.imagen.url }}" alt="Media">{% endif %}
+                {% endfor %}
+              {% else %}
+                {% if i.pack_set.all %}
+                  {% for img in i.pack_set.all %}
+                    {% if forloop.first %}<img src="{{ img.imagen.url }}" alt="Media">{% endif %}
+                  {% endfor %}
+                {% endif %}
+              {% endif %}
+
+              <div class="video-card-overlay">
+                <i class="bi bi-heart-fill me-1"></i>
+                <span>{{ i.reaccion_set.count }}</span>
+              </div>
+            </div>
+
+            <div class="video-title-caption">
+              {{ i.descripcion|default:"Ver publicación multimedia." }}
+            </div>
+          </div>
+        {% empty %}
+          <div class="text-center py-5 w-100" style="grid-column: 1 / -1; opacity: 0.4;">
+            <i class="bi bi-camera-video fs-1"></i>
+            <p class="mt-2 fw-bold">Este creador no ha subido videos todavía.</p>
+          </div>
+        {% endfor %}
+      </section>
+
+    </div> <!-- FIN .profile-info-wrapper -->
+  </main>
+
+  <!-- MODAL: CREAR PUBLICACIÓN -->
+  <div class="modal fade" id="modalPublicar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-white p-3 modal-custom-dark">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold">Cargar contenido nuevo</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{% url 'publicacion:publicar' %}" method="post" enctype="multipart/form-data">
+          <div class="modal-body">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label text-secondary small fw-bold">Descripción / Leyenda</label>
+              <textarea class="form-control web-input" name="descripcion" rows="3" placeholder="¿Qué estás pensando hoy? #parati" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-secondary small fw-bold">Seleccionar archivo (Foto/Video)</label>
+              <input type="file" class="form-control web-input" name="publicacion" required>
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="submit" class="btn tiktok-btn-primary w-100">Publicar Contenido</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EDITAR PERFIL -->
+  <div class="modal fade" id="modalEditarPerfil" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-white p-3 modal-custom-dark">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold">Editar información del perfil</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="" method="post" enctype="multipart/form-data">
+          <div class="modal-body">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label text-secondary small fw-bold">Foto de perfil (Avatar)</label>
+              <input type="file" class="form-control web-input" name="avatar">
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-secondary small fw-bold">Imagen de fondo (Banner)</label>
+              <input type="file" class="form-control web-input" name="banner">
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-secondary small fw-bold">Biografía</label>
+              <input type="text" class="form-control web-input" name="biografia" value="{{ perfil.biografia }}">
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="submit" class="btn btn-light w-100 fw-bold btn-sm rounded-1 py-2">Guardar Cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>

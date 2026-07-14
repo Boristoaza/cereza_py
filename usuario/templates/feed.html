@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cereza - Feed Premium</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <style>
+    /* TOKENS DE DISEÑO - CEREZA */
+    :root {
+      --bg-dark: #121212;
+      --bg-black: #000000;
+      --border-transparent: rgba(255, 255, 255, 0.08);
+      --neon-red: #fe2c55;
+      --neon-cyan: #25f4ee;
+      --text-muted: rgba(255, 255, 255, 0.5);
+    }
+
+    body {
+      background-color: var(--bg-black);
+      color: #ffffff;
+       background-color: #121212;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+    }
+
+    /* NAVBAR PREMIUM TRANSLÚCIDA */
+    .navbar {
+      background-color: rgba(0, 0, 0, 0.8) !important;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-transparent);
+    }
+
+    .navbar-brand {
+      color: #ffffff !important;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      font-size: 1.35rem;
+    }
+
+    .search-pill-group {
+      background-color: rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+    }
+
+    .nav-icon {
+      color: #ffffff;
+      font-size: 1.35rem;
+      transition: color 0.2s;
+    }
+
+    .nav-icon:hover {
+      color: var(--neon-red);
+    }
+
+    .profile-bubble {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: inline-block;
+      border: 1px solid var(--border-transparent);
+    }
+
+    /* LAYOUT PRINCIPAL (GRID) */
+    .app-layout {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 768px) {
+      .app-layout {
+        grid-template-columns: 240px 1fr;
+        gap: 20px;
+      }
+    }
+
+    /* SIDEBAR / MENÚ LATERAL */
+    .sidebar-web {
+      position: sticky;
+      top: 80px;
+      height: fit-content;
+      padding-top: 10px;
+    }
+
+    .nav-link-web {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 12px 16px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .nav-link-web i {
+      font-size: 1.3rem;
+    }
+
+    .nav-link-web:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--neon-red);
+    }
+
+    .nav-link-web.active {
+      color: var(--neon-red);
+    }
+
+    /* SECCIÓN DE HISTORIAS (ESTILO STORIES) */
+    .stories-container {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding: 10px 0 20px 0;
+      margin-bottom: 10px;
+    }
+
+    .stories-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .story-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      min-width: 68px;
+    }
+
+    .story-avatar-wrapper {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      padding: 2px;
+      border: 2px solid var(--neon-red);
+      margin-bottom: 6px;
+    }
+
+    .story-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      background-color: var(--bg-dark);
+    }
+
+    .story-name {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      max-width: 65px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    /* POST CARDS & INTERFACES VERTICALES */
+    .post-card {
+      background-color: transparent !important;
+      border: none !important;
+      border-bottom: 1px solid var(--border-transparent) !important;
+      border-radius: 0 !important;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+    }
+
+    .post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      border: 1px solid var(--border-transparent);
+    }
+
+    .post-media-layout {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+    }
+
+    .post-img-container {
+      max-width: 340px;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-transparent);
+      background-color: var(--bg-dark);
+      cursor: pointer;
+    }
+
+    .post-img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+    }
+
+    .post-actions-bar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .action-icon {
+      background: none;
+      border: none;
+      padding: 0;
+      color: #ffffff;
+    }
+
+    .action-icon-wrapper {
+      width: 42px;
+      height: 42px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .action-icon:hover .action-icon-wrapper {
+      background-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .post-content-area {
+      padding: 16px 0 8px 0;
+      max-width: 340px;
+    }
+
+    /* MODAL DE DETALLE DIVIDIDO (TIKTOK/ONLYFANS WEB LAYOUT) */
+    .modal-cereza-content {
+      background-color: var(--bg-black) !important;
+      border: 1px solid var(--border-transparent) !important;
+      border-radius: 16px !important;
+      overflow: hidden;
+    }
+
+    .modal-split-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 768px) {
+      .modal-split-layout {
+        grid-template-columns: 1.2fr 1fr;
+        min-height: 80vh;
+      }
+    }
+
+    .modal-media-side {
+      background-color: #050505;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--border-transparent);
+    }
+
+    .modal-media-side img {
+      width: 100%;
+      max-height: 85vh;
+      object-fit: contain;
+    }
+
+    .modal-comments-side {
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-dark);
+      max-height: 85vh;
+    }
+
+    .modal-comments-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-transparent);
+    }
+
+    .modal-comments-body {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    .modal-comments-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border-transparent);
+      background-color: var(--bg-black);
+    }
+
+    /* FORMULARIOS PREMIUM */
+    .input-cereza {
+      background-color: rgba(0, 0, 0, 0.4) !important;
+      border: 1px solid var(--border-transparent) !important;
+      color: #ffffff !important;
+      border-radius: 20px !important;
+      padding-right: 45px;
+    }
+
+    .input-cereza:focus {
+      border-color: var(--neon-cyan) !important;
+      box-shadow: none !important;
+    }
+
+    .btn-send-inside {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--neon-red);
+      font-weight: 700;
+      font-size: 0.9rem;
+      z-index: 5;
+    }
+
+    .dropdown-menu {
+      background-color: var(--bg-dark) !important;
+      border: 1px solid var(--border-transparent) !important;
+    }
+
+    .dropdown-item {
+      color: #ffffff;
+    }
+
+    .dropdown-item:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #ffffff;
+    }
+
+    .btn-close-white-custom {
+      filter: invert(1);
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand sticky-top py-2 shadow-none">
+    <div class="container d-flex align-items-center justify-content-between" style="max-width: 1100px;">
+      <a class="navbar-brand m-0" href="{% url 'feed:feed' %}">Cereza 🍒</a>
+
+      <form action="{% url 'buscador:buscar' %}" method="GET" class="d-none d-sm-block flex-grow-1 mx-5" style="max-width: 268px;">
+        <div class="input-group search-pill-group px-3 py-1">
+          <span class="bg-transparent border-0 text-muted me-1 d-flex align-items-center">
+            <i class="bi bi-search" style="font-size: 0.85rem;"></i>
+          </span>
+          <input type="text" class="form-control bg-transparent border-0 p-0 text-white" placeholder="Buscar creadores..." name="busqueda" id="busqueda" required style="box-shadow: none;">
+        </div>
+      </form>
+
+      <div class="d-flex gap-3 align-items-center">
+        <button class="btn p-0 border-0 nav-icon" data-bs-toggle="modal" data-bs-target="#modalPublicar" title="Crear publicación">
+          <i class="bi bi-plus-square"></i>
+        </button>
+
+        <a href="{% url 'usuario:perfil' %}" class="profile-bubble mb-0">
+          <img src="/media/{{ request.user.perfil.avatar }}" alt="Mi Perfil" style="width: 100%; height: 100%; object-fit: cover;">
+        </a>
+
+        <div class="dropdown">
+          <a class="nav-icon text-decoration-none p-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-list"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end mt-2 shadow-sm py-1">
+            <li>
+              <form action="{% url 'usuario:logout' %}" method="post" class="m-0 p-0">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item text-danger small fw-semibold py-2">
+                  <i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión
+                </button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container app-layout pt-4">
+
+    <aside class="sidebar-web d-none d-md-block">
+      <nav class="d-flex flex-column gap-1">
+        <a href="#" class="nav-link-web active"><i class="bi bi-house-door-fill"></i> Para ti</a>
+        <a href="#" class="nav-link-web"><i class="bi bi-people"></i> Siguiendo</a>
+        <a href="#" class="nav-link-web"><i class="bi bi-compass"></i> Explorar</a>
+      </nav>
+    </aside>
+
+    <main style="max-width: 500px; width: 100%; justify-self: start;">
+
+      <div class="stories-container">
+        <div class="story-item" data-bs-toggle="modal" data-bs-target="#modalVerHistoria" onclick="cargarStory('/media/{{ request.user.perfil.avatar }}', 'Tu historia')">
+          <div class="story-avatar-wrapper">
+            <img src="/media/{{ request.user.perfil.avatar }}" class="story-img" alt="Tu historia">
+          </div>
+          <span class="story-name">Tu historia</span>
+        </div>
+        <div class="story-item" data-bs-toggle="modal" data-bs-target="#modalVerHistoria" onclick="cargarStory('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500', 'lorena.sparks')">
+          <div class="story-avatar-wrapper">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="story-img" alt="User">
+          </div>
+          <span class="story-name">lorena.sparks</span>
+        </div>
+        <div class="story-item" data-bs-toggle="modal" data-bs-target="#modalVerHistoria" onclick="cargarStory('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500', 'neon_beat')">
+          <div class="story-avatar-wrapper">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="story-img" alt="User">
+          </div>
+          <span class="story-name">neon_beat</span>
+        </div>
+      </div>
+
+      {% for i in post %}
+      <div class="card post-card mb-4 shadow-none">
+
+        <div class="post-header">
+          <div class="post-avatar me-2 small text-uppercase">{{ i.usuario|slice:":1"|upper }}</div>
+          <div class="d-flex flex-column">
+            <span class="fw-bold small d-flex align-items-center gap-1">
+              {{ i.usuario }} <span style="color: var(--neon-cyan); font-size: 0.8rem;">✓</span>
+            </span>
+            <small class="text-muted" style="font-size: 0.75rem; color: var(--text-muted) !important;">{{ i.fecha|date:"d M, Y" }}</small>
+          </div>
+        </div>
+
+        <div class="post-media-layout">
+
+          {% for pack in i.pack_set.all %}
+          <div class="post-img-container" data-bs-toggle="modal" data-bs-target="#modalDetallePost{{ i.id }}">
+            <img src="/media/{{pack.imagen}}" class="post-img" alt="Contenido Cereza">
+          </div>
+          {% endfor %}
+
+          <div class="post-actions-bar">
+            <button class="action-icon">
+              <div class="action-icon-wrapper" style="color: var(--neon-red); background-color: rgba(254, 44, 85, 0.1);">
+                <i class="bi bi-heart-fill"></i>
+              </div>
+            </button>
+
+            <button class="action-icon" data-bs-toggle="modal" data-bs-target="#modalDetallePost{{ i.id }}">
+              <div class="action-icon-wrapper">
+                <i class="bi bi-chat-text"></i>
+              </div>
+            </button>
+
+            <button class="action-icon" title="Compartir publicación" onclick="compartirPost('{{ i.id }}')">
+              <div class="action-icon-wrapper">
+                <i class="bi bi-share"></i>
+              </div>
+            </button>
+          </div>
+
+        </div>
+
+        <div class="post-content-area">
+          <p class="fw-bold mb-1 small text-white">{{ i.post.reaccion }} Me gusta</p>
+          <p class="mb-2 small lh-sm">
+            <span class="fw-bold me-1 text-white">@{{ i.usuario }}</span>{{ i.descripcion }}
+          </p>
+        </div>
+
+      </div>
+
+      <div class="modal fade" id="modalDetallePost{{ i.id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content modal-cereza-content">
+
+            <div class="modal-split-layout">
+
+              <div class="modal-media-side position-relative">
+                <button type="button" class="btn-close btn-close-white-custom position-absolute top-0 start-0 m-3 d-md-none" data-bs-dismiss="modal" aria-label="Close" style="z-index: 10;"></button>
+                {% for pack in i.pack_set.all %}
+                  <img src="/media/{{pack.imagen}}" alt="Cereza Media Detalle">
+                {% endfor %}
+              </div>
+
+              <div class="modal-comments-side">
+
+                <div class="modal-comments-header d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center">
+                    <div class="post-avatar me-2 small text-uppercase">{{ i.usuario|slice:":1"|upper }}</div>
+                    <div>
+                      <span class="fw-bold small d-block">@{{ i.usuario }}</span>
+                      <small class="text-muted" style="font-size: 0.75rem; color: var(--text-muted) !important;">{{ i.fecha|date:"d M, Y" }}</small>
+                    </div>
+                  </div>
+                  <button type="button" class="btn-close btn-close-white-custom d-none d-md-block" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-comments-body">
+                  <p class="small mb-3 pb-3 border-bottom lh-sm" style="border-color: var(--border-transparent) !important;">
+                    {{ i.descripcion }}
+                  </p>
+
+                  <div class="comments-feed-list">
+                    {% for coment in i.comentario_set.all %}
+                    <div class="d-flex gap-2 mb-3 align-items-start">
+                      <div class="post-avatar small text-uppercase" style="width:28px; height:28px; font-size:0.7rem;">
+                        {{ coment.usuario|slice:":1"|upper }}
+                      </div>
+                      <div>
+                        <span class="fw-bold small text-white d-inline-block me-1">@{{ coment.usuario }}</span>
+                        <p class="text-white-50 small m-0 d-inline">{{ coment.comentario }}</p>
+                      </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted text-center py-4" style="font-size: 0.85rem; color: var(--text-muted) !important;">No hay comentarios aún. Deja una cereza.</p>
+                    {% endfor %}
+                  </div>
+                </div>
+
+                <div class="modal-comments-footer">
+                  <form action="{% url 'comentarios:comentar' %}" method="post" class="m-0 position-relative">
+                    {% csrf_token %}
+                    <input type="hidden" name="id_post" value="{{ i.id }}">
+                    <input type="text" name="comentario" class="form-control input-cereza" placeholder="Añade un comentario..." required autocomplete="off">
+                    <button type="submit" class="btn-send-inside">Enviar</button>
+                  </form>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {% empty %}
+      <div class="text-center py-5">
+        <i class="bi bi-moon-stars text-muted display-5" style="color: var(--text-muted) !important;"></i>
+        <p class="text-muted mt-3 small" style="color: var(--text-muted) !important;">El feed está en silencio absoluto.</p>
+      </div>
+      {% endfor %}
+
+    </main>
+
+  </div>
+
+  <div class="modal fade" id="modalVerHistoria" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down" style="max-width: 420px;">
+      <div class="modal-content border-0" style="background-color: var(--bg-black); border-radius: 16px; overflow: hidden; height: 80vh; min-height: 500px;">
+
+        <div class="position-absolute top-0 start-0 w-100 p-3" style="z-index: 15; background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);">
+          <div class="progress mb-2" style="height: 3px; background-color: rgba(255,255,255,0.2); border-radius: 10px;">
+            <div class="progress-bar" role="progressbar" style="width: 100%; background-color: var(--neon-red); transition: width 5s linear;" id="storyProgressBar"></div>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-between text-white">
+            <div class="d-flex align-items-center gap-2">
+              <div id="storyCreatorAvatar" class="post-avatar" style="width: 30px; height: 30px; font-size: 0.8rem;">U</div>
+              <span id="storyCreatorName" class="fw-bold small">Nombre</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
+          </div>
+        </div>
+
+        <div class="w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: #050505;">
+          <img id="storyContentImage" src="" alt="Historia" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // LÓGICA DE HISTORIAS DINÁMICAS
+    function cargarStory(imageSrc, username) {
+      document.getElementById('storyContentImage').src = imageSrc;
+      document.getElementById('storyCreatorName').innerText = '@' + username;
+      document.getElementById('storyCreatorAvatar').innerText = username.charAt(0).toUpperCase();
+
+      const progressBar = document.getElementById('storyProgressBar');
+      progressBar.style.width = '0%';
+      setTimeout(() => {
+        progressBar.style.width = '100%';
+      }, 100);
+    }
+
+    // ACCIÓN COMPARTIR
+    function compartirPost(postId) {
+      const url = `${window.location.origin}/post/${postId}`;
+      navigator.clipboard.writeText(url).then(() => {
+        alert("¡Enlace copiado al portapapeles! 🍒");
+      }).catch(err => {
+        console.error("Error al copiar enlace: ", err);
+      });
+    }
+  </script>
+</body>
+
+</html>

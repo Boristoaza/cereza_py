@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cereza - Red Social</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <style>
+    body {
+      background-color: #121212;
+      color: #f1f1f1;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* BARRA SUPERIOR (FIXED NAVBAR) */
+    .header-web {
+      background-color: #121212;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      height: 60px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 0 24px;
+    }
+
+    .brand-cereza {
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: #fcf9fa !important;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .search-bar-container {
+      background-color: rgba(255, 255, 255, 0.06);
+      border: 1px solid transparent;
+      border-radius: 92px;
+      padding: 0 16px;
+      width: 360px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-bar-container:focus-within {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .search-input {
+      background: none;
+      border: none;
+      color: #fff;
+      outline: none;
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+    /* BARRA LATERAL FIJA */
+    .sidebar-web {
+      width: 240px;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      bottom: 0;
+      padding: 20px 8px 20px 24px;
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+      background-color: #121212;
+    }
+
+    .nav-link-web {
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+
+    .nav-link-web:hover {
+      background-color: rgba(255, 255, 255, 0.04);
+      color: #fff;
+    }
+
+    .nav-link-web.active {
+      color: #DE3163;
+    }
+
+    /* CONTENEDOR PRINCIPAL DE CONTENIDO */
+    .main-profile-content {
+      margin-left: 240px;
+      margin-top: 60px;
+      padding: 24px 40px 32px 40px;
+    }
+
+    /* GRID DE VIDEOS REELS / TIKTOK (RESPONSIVO REAL) */
+    .videos-grid-tiktok {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .videos-grid-tiktok>div {
+      width: 100%;
+      max-width: 360px;
+      /* ancho del post */
+    }
+
+    /* TARJETA CON RELACIÓN DE ASPECTO 9:16 */
+    .tiktok-video-card {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      background-color: #000;
+    }
+
+    .tiktok-video-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .tiktok-video-card:hover img {
+      transform: scale(1.05);
+    }
+
+    /* OVERLAY ESTILO INSTAGRAM / TIKTOK AL PASAR EL MOUSE */
+    .video-card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .tiktok-video-card:hover .video-card-overlay {
+      opacity: 1;
+    }
+
+    /* DESCRIPCIÓN CORTA DEBAJO DEL POST */
+    .video-title-caption {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #ccc;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 2px;
+    }
+
+    /* NUEVO MODAL DE DETALLE ESTILO REPRODUCTOR DE TIKTOK */
+    .modal-tiktok-player .modal-dialog {
+      max-width: 1100px;
+      width: 90%;
+    }
+
+    .modal-tiktok-player .modal-content {
+      background-color: #16171a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    /* Lado Izquierdo: Visualizador de Medios */
+    .player-media-container {
+      background-color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 500px;
+    }
+
+    .player-media-container img {
+      max-width: 100%;
+      max-height: 75vh;
+      object-fit: contain;
+    }
+
+    /* Lado Derecho: Panel de Información Lateral Fijo */
+    .player-info-sidebar {
+      background-color: #16171a;
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .player-header {
+      padding: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .player-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .player-body-scroll {
+      padding: 24px;
+      overflow-y: auto;
+      flex-grow: 1;
+      max-height: 320px;
+    }
+
+    .comment-box-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .comment-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* Acciones e Inputs dentro del detalle */
+    .player-actions-row {
+      padding: 16px 24px;
+      background-color: rgba(255, 255, 255, 0.02);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .player-action-icon-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .player-action-icon-btn i {
+      font-size: 1.25rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .player-action-icon-btn:hover i {
+      color: #DE3163;
+    }
+
+    .player-footer-form {
+      padding: 16px 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background-color: #16171a;
+    }
+
+    /* ESTILOS DE COMPONENTES DE FORMULARIO PARA MODALES */
+    .web-input {
+      background-color: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      border-radius: 6px;
+    }
+
+    .web-input:focus {
+      background-color: rgba(255, 255, 255, 0.06);
+      color: white;
+      border-color: #DE3163;
+      box-shadow: none;
+    }
+
+    .tiktok-btn-primary {
+      background-color: #DE3163;
+      color: #fff;
+      font-weight: 600;
+      padding: 6px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+    }
+
+    .tiktok-btn-primary:hover {
+      background-color: #900C3F;
+      color: #fff;
+    }
+
+    .profile-bubble {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid #DE3163;
+    }
+
+    .video-actions-right {
+      position: absolute;
+      right: 12px;
+      bottom: 20px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+
+      z-index: 20;
+    }
+
+    .video-actions-right button {
+      background: none;
+      border: none;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .video-actions-right button i {
+      font-size: 1.8rem;
+    }
+
+    .video-actions-right button span {
+      font-size: .75rem;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .video-actions-right button:hover i {
+      color: #DE3163;
+      transform: scale(1.1);
+    }
+
+    .post-user {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      z-index: 20;
+    }
+
+    .post-user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .post-user-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #DE3163;
+      box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+    }
+
+    .post-user-name {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .post-user-name strong {
+      color: #fff;
+      font-size: .95rem;
+      line-height: 1;
+    }
+
+    .post-user-name span {
+      color: #d0d0d0;
+      font-size: .75rem;
+    }
+
+    .post-options {
+      background: rgba(0, 0, 0, .35);
+      backdrop-filter: blur(8px);
+      border: none;
+      color: #fff;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+    }
+
+    .post-options:hover {
+      background: rgba(0, 0, 0, .6);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- BARRA SUPERIOR (HEADER) -->
+  <header class="header-web d-flex align-items-center justify-content-between">
+    <a class="brand-cereza" href="{% url 'feed:feed' %}">
+      <!-- <i class="bi bi-cherry-fill me-2"></i>Cereza -->
+      🍒Cereza
+    </a>
+
+    <form action="{% url 'buscador:buscar' %}" method="GET" class="search-bar-container">
+      <input type="text" class="search-input" placeholder="Buscar cuentas y videos" name="busqueda" id="busqueda"
+        required>
+      <button type="submit" class="bg-transparent border-0 text-white-50"><i class="bi bi-search"></i></button>
+    </form>
+
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn text-white p-0 fs-5" data-bs-toggle="modal" data-bs-target="#modalPublicar"
+        title="Crear publicación">
+        <i class="bi bi-plus-square-fill text-cherry" style="color: #DE3163;"></i>
+      </button>
+
+      <a href="{% url 'usuario:perfil' %}" class="profile-bubble">
+        <img src="/media/{{ request.user.perfil.avatar }}" alt="Mi Perfil"
+          style="width: 100%; height: 100%; object-fit: cover;">
+      </a>
+
+      <div class="dropdown">
+        <a class="text-white fs-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-list"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark mt-2 border-secondary shadow">
+          <li>
+            <form action="{% url 'usuario:logout' %}" method="post" class="m-0">
+              {% csrf_token %}
+              <button type="submit" class="dropdown-item text-danger small fw-semibold">
+                <i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- BARRA LATERAL (SIDEBAR) -->
+  <aside class="sidebar-web">
+    <nav class="d-flex flex-column gap-1">
+      <a href="{% url 'feed:feed' %}" class="nav-link-web active">
+        <i class="bi bi-house-door-fill"></i> Para ti
+      </a>
+      <a href="#" class="nav-link-web">
+        <i class="bi bi-people"></i> Siguiendo
+      </a>
+      <a href="#" class="nav-link-web">
+        <i class="bi bi-compass"></i> Explorar
+      </a>
+      <a href="{% url 'usuario:perfil' %}" class="nav-link-web">
+        <i class="bi bi-person"></i> Perfil
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-profile-content">
+
+    <div class="videos-grid-tiktok">
+      {% for i in post %}
+      <div class="d-flex flex-column">
+         <div class="post-user">
+
+        <div class="post-user-info">
+
+            <img src="/media/{{ i.usuario.perfil.avatar }}"
+                 class="post-user-avatar">
+
+            <div class="post-user-name">
+                <strong>{{ i.usuario.perfil.nombre_usuario }}</strong>
+                <span>@{{ i.usuario.username }}</span>
+            </div>
+
+        </div>
+
+        <button class="post-options">
+            <i class="bi bi-three-dots"></i>
+        </button>
+
+    </div>
+        <!-- Card de Publicación -->
+        <div class="tiktok-video-card" data-bs-toggle="modal" data-bs-target="#modalDetallePost{{ i.id }}">
+          {% for pack in i.pack_set.all %}
+          {% if forloop.first %}
+          <img src="/media/{{ pack.imagen }}" alt="Cereza post">
+
+          {% endif %}
+          {% empty %}
+          <div class="w-100 h-100 bg-dark d-flex align-items-center justify-content-center text-muted">
+            <i class="bi bi-image fs-2"></i>
+          </div>
+          {% endfor %}
+
+          <!-- Overlay al pasar el mouse (Estilo Instagram Web) -->
+          <div class="video-actions-right">
+
+            <button>
+              <i class="bi bi-heart-fill"></i>
+              <span>{{ i.reaccion_set.count }}</span>
+            </button>
+
+            <button data-bs-toggle="modal" data-bs-target="#modalDetallePost{{ i.id }}">
+              <i class="bi bi-chat-fill"></i>
+              <span>{{ i.comentario_set.count }}</span>
+            </button>
+
+            <button>
+              <i class="bi bi-repeat"></i>
+              <span>0</span>
+            </button>
+
+            <button>
+              <i class="bi bi-send-fill"></i>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- Pie corto debajo del elemento -->
+        <div class="video-title-caption">
+          {{ i.descripcion }}
+        </div>
+      </div>
+
+      <!-- MODAL DETALLE DE POST -->
+      <div class="modal fade modal-tiktok-player" id="modalDetallePost{{ i.id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body p-0">
+              <div class="row g-0">
+
+                <!-- LADO IZQUIERDO: MULTIMEDIA -->
+                <div class="col-12 col-md-7 player-media-container">
+                  <button type="button" class="btn-close btn-close-white position-absolute top-0 start-0 m-3 z-3"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+                  {% for pack in i.pack_set.all %}
+                  {% if forloop.first %}
+                  <img src="/media/{{ pack.imagen }}" alt="Detalle multimedia">
+                  {% endif %}
+                  {% endfor %}
+                </div>
+
+                <!-- LADO DERECHO: PANEL LATERAL -->
+                <div class="col-12 col-md-5 player-info-sidebar">
+                  <div class="player-header d-flex align-items-center gap-3">
+                    <img src="/media/{{ i.usuario.perfil.avatar }}" class="player-avatar" alt="Avatar">
+                    <div>
+                      <h6 class="mb-0 fw-bold">@{{ i.usuario.perfil.nombre_usuario }}</h6>
+                      <small class="text-white-50" style="font-size: 0.75rem;">{{ i.fecha|date:"d M, Y" }}</small>
+                    </div>
+                  </div>
+
+                  <div class="player-body-scroll">
+                    <p class="text-white row-gap-2 mb-4" style="font-size: 0.95rem;">
+                      {{ i.descripcion }}
+                    </p>
+                    <hr class="border-secondary my-3">
+                    <h6 class="fw-bold small mb-3 text-white-50">Comentarios ({{ i.comentario_set.count }})</h6>
+
+                    {% for coment in i.comentario_set.all %}
+                    <div class="comment-box-item">
+                      <img src="/media/{{ coment.usuario.perfil.avatar }}" class="comment-avatar" alt="Avatar coment">
+                      <div>
+                        <span class="fw-bold small d-block" style="color: #DE3163;">@{{
+                          coment.usuario.perfil.nombre_usuario }}</span>
+                        <p class="small text-white-50 m-0">{{ coment.comentario }}</p>
+                      </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center text-muted py-4 small">
+                      <i class="bi bi-chat-left-dots d-block fs-3 mb-2"></i>
+                      No hay comentarios todavía.
+                    </div>
+                    {% endfor %}
+                  </div>
+
+                  <div class="player-actions-row d-flex gap-4">
+                    <button class="player-action-icon-btn">
+                      <i class="bi bi-heart-fill" style="color: #DE3163;"></i> {{ i.reaccion_set.count }}
+                    </button>
+                    <button class="player-action-icon-btn">
+                      <i class="bi bi-chat-text-fill"></i> {{ i.comentario_set.count }}
+                    </button>
+                  </div>
+
+                  <div class="player-footer-form">
+                    <form action="{% url 'comentarios:comentar' %}" method="post" class="d-flex gap-2">
+                      {% csrf_token %}
+                      <input type="hidden" name="id_post" value="{{ i.id }}">
+                      <input type="text" name="comentario" class="form-control web-input form-control-sm"
+                        placeholder="Añadir comentario..." required>
+                      <button type="submit" class="btn btn-sm tiktok-btn-primary">Publicar</button>
+                    </form>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% empty %}
+      <div class="text-center py-5 w-100" style="grid-column: 1 / -1;">
+        <i class="bi bi-camera display-4 text-muted"></i>
+        <p class="text-muted mt-3">Aún no hay publicaciones para mostrar en Cereza.</p>
+      </div>
+      {% endfor %}
+    </div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
