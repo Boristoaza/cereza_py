@@ -1,0 +1,93 @@
+    /* --- FEED DE PUBLICACIONES (VISTA PRINCIPAL) --- */
+    .post_grid {
+      max-width: 1000px;
+      /* Alínea el ancho máximo con el header del perfil */
+      margin: 0 auto !important;
+      /* Centra el componente horizontalmente */
+      width: 100%;
+      padding: 0 20px;
+      margin-top: -100px !important;
+      /* Agrega la misma holgura que tiene el profile-info-wrapper */
+    }
+
+    .tiktok-grid-item {
+      cursor: pointer;
+      transition: transform 0.2s ease, filter 0.2s ease;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      position: relative;
+      background-color: #16171a;
+      /* ❌ Se eliminó 'left: 100px;' para evitar desvíos raros */
+    }
+
+    .tiktok-grid-item:hover {
+      transform: scale(1.02);
+      filter: brightness(0.9);
+    }
+
+    .tiktok-grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .views-badge {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    /* --- PANTALLA DE DETALLE COMPLETA (OFFCANVAS / ASIDE) --- */
+    .tiktok-aside-detail {
+      width: 100% !important;
+      background-color: #000000 !important;
+      border-left: none !important;
+    }
+
+    .media-preview-container {
+      background-color: #000;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .comments-sidebar {
+      background-color: #16171a;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid #222;
+    }
+
+    .comments-list {
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+
+    .comments-list::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .comments-list::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 767.98px) {
+      .media-preview-container {
+        height: 50vh;
+      }
+
+      .comments-sidebar {
+        height: 50vh;
+      }
+
+      .tiktok-aside-detail .offcanvas-body {
+        overflow-y: auto;
+      }
+    }

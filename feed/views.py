@@ -18,20 +18,21 @@ def feed_view(request):
         .prefetch_related('pack_set')
     )
 
-#   for post in posts:
-#     for imagen in post.pack_set.all():
-#         print(
-#             post.usuario.perfil.nombre_usuario,
-#             post.descripcion,
-#             post.fecha,
-#             imagen.imagen
-#         )
+  # post = Post.objects.select_related('usuario')\
+  #   .prefetch_related('reaccion_set', 'pack_set', 'comentario_set')\
+  #   .order_by('-fecha')
 
+  post = Post.objects.filter(usuario=request.user).select_related('usuario__perfil').prefetch_related('pack_set')
+  for i in post:
+      if i.post_original:
+          print("Post compartido:", i.id)
+          print("Original:", i.post_original.id)
 
+          for x in i.post_original.pack_set.all():
+              print(x.imagen)
 
-  post = Post.objects.select_related('usuario')\
-    .prefetch_related('reaccion_set', 'pack_set', 'comentario_set')\
-    .order_by('-fecha')
+  consultar_post = Post.objects.get(id=17)
+
 
 
 

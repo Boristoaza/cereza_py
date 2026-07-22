@@ -1,0 +1,26 @@
+
+
+<div class="stories-container">
+  <!-- Historia del usuario logueado -->
+  <div class="story-item" data-bs-toggle="modal" data-bs-target="#modalVerHistoria" onclick="cargarStory('/media/{{ request.user.perfil.avatar }}', 'Tu historia')">
+    <div class="story-avatar-wrapper">
+      <img src="/media/{{ request.user.perfil.avatar }}" class="story-img" alt="Tu historia">
+    </div>
+    <span class="story-name">Tu historia</span>
+  </div>
+
+  <!-- Historias de la comunidad (Bucle estático temporal o dinámico) -->
+  <div class="story-item" data-bs-toggle="modal" data-bs-target="#modalVerHistoria" onclick="cargarStory('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500', 'lorena.sparks')">
+    <div class="story-avatar-wrapper">
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="story-img" alt="User">
+    </div>
+    <span class="story-name">lorena.sparks</span>
+  </div>
+
+  <div class="story-item" data-bs-toggle="modal" data-bs-target="#modalVerHistoria" onclick="cargarStory('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500', 'neon_beat')">
+    <div class="story-avatar-wrapper">
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="story-img" alt="User">
+    </div>
+    <span class="story-name">neon_beat</span>
+  </div>
+</div>

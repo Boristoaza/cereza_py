@@ -1,0 +1,77 @@
+/* VARIABLES COMPARTIDAS */
+:root {
+  --color-cereza: #ff2a5f;
+  --color-cereza-hover: #e02050;
+  --bg-navbar: rgba(18, 18, 18, 0.8);
+}
+
+/* LA NAVBAR FIJA */
+.header-web {
+  background-color: var(--bg-navbar);
+  backdrop-filter: blur(12px); /* Efecto blur premium estilo iOS/Mac */
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  height: 64px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1050;
+}
+
+/* EL BUSCADOR (Estructura base) */
+.search-bar-container {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px; /* Esquinas suavizadas y modernas */
+  padding: 0 16px;
+  width: 380px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+/* Interacción de foco con Bootstrap-like ring effect */
+.search-bar-container:focus-within {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--color-cereza);
+  box-shadow: 0 0 0 3px rgba(255, 42, 95, 0.15);
+}
+
+.search-input {
+  background: none;
+  border: none;
+  color: #ffffff;
+  outline: none;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.search-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.2s ease;
+}
+
+.search-bar-container:focus-within .search-btn {
+  color: var(--color-cereza);
+}
+
+/* BOTÓN PERSONALIZADO CEREZA */
+.btn-cereza {
+  background-color: var(--color-cereza);
+  color: #ffffff;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-cereza:hover {
+  background-color: var(--color-cereza-hover);
+  color: #ffffff;
+}

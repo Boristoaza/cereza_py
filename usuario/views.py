@@ -60,6 +60,13 @@ def logout_view(request):
   logout(request)
   return redirect('usuario:login')
 
+
+def main_view(request):
+    nombre_usuario = Perfil.objects.filter(usuario=request.user)
+    for i in nombre_usuario:
+        print(i)
+    return render(request,'main.html')
+
 @login_required
 def perfil_view(request):
 
@@ -99,6 +106,9 @@ def perfil_view(request):
 
     cantidad_seguidores = seguidores.count()
     cantidad_seguidos = seguidos.count()
+
+
+
 
     publicaciones = (
     Post.objects

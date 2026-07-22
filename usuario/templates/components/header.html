@@ -1,0 +1,89 @@
+<!-- PROFILE HEADER -->
+{% extends 'master.html' %}
+
+{% block content %}
+<!-- CORRECCIÓN: El banner ahora está dentro del bloque de contenido de Django -->
+{% if perfil.banner %}
+<div class="profile-mini-banner"
+     style="background-image: url('/media/{{ perfil.banner }}');">
+</div>
+{% else %}
+<div class="profile-mini-banner"
+     style="background: linear-gradient(90deg, #1f1f2e, #121212);">
+</div>
+{% endif %}
+
+<div class="profile-info-wrapper">
+
+    <section class="profile-header-info">
+
+        {% if perfil.avatar %}
+            <img src="/media/{{ perfil.avatar }}"
+                 class="profile-avatar-big"
+                 alt="Avatar de {{ perfil.nombre_usuario }}">
+        {% else %}
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde"
+                 class="profile-avatar-big"
+                 alt="Avatar por defecto">
+        {% endif %}
+
+        <div class="profile-title-area">
+            <h1>{{ perfil.nombre_usuario }}</h1>
+            <h2>@{{ perfil.nombre_usuario }}</h2>
+        </div>
+
+    </section>
+
+    <section class="counts-container mb-3">
+
+        <div class="count-item">
+            <strong>{{ seguidos.count|default:"0" }}</strong>
+            Siguiendo
+        </div>
+
+        <div class="count-item">
+            <strong>{{ seguidores.count|default:"0" }}</strong>
+            Seguidores
+        </div>
+
+        <div class="count-item">
+            <strong>{{ posts.count|default:"0" }}</strong>
+            Publicaciones
+        </div>
+
+    </section>
+
+    <section class="bio-text mb-4">
+        <p class="m-0 text-secondary">
+            {{ perfil.biografia|default:"Ninguna biografía configurada todavía." }}
+        </p>
+    </section>
+
+    <div class="action-buttons-area">
+
+        {% if request.user != perfil.usuario %}
+
+            <form action="{% url 'seguir:seguir' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="usuario" value="{{ perfil.usuario }}">
+                <button type="submit" class="tiktok-btn-primary">
+                    Seguir
+                </button>
+            </form>
+
+        {% else %}
+
+            <form action="{% url 'usuario:logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit"
+                        class="btn btn-sm btn-outline-danger px-3 rounded-1 fw-bold">
+                    Cerrar sesión
+                </button>
+            </form>
+
+        {% endif %}
+
+    </div>
+
+</div>
+{% endblock %}

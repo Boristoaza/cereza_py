@@ -1,0 +1,33 @@
+<!-- HEADER / TOP NAV -->
+<header class="header-web d-flex align-items-center justify-content-between px-4">
+
+  <!-- Logo -->
+  <a href="#" class="d-flex align-items-center text-decoration-none text-white fw-bold fs-4">
+    <span class="me-2">🍒</span>Cereza
+  </a>
+
+  <!-- Buscador Integrado (Se oculta en pantallas pequeñas con d-none d-md-block) -->
+  <form action="{% url 'buscador:buscar' %}" method="GET" class="d-none d-md-block">
+    <div class="search-bar-container">
+      <input type="text" class="search-input" placeholder="Buscar creadores o posts..." name="busqueda" id="busqueda" required>
+      <button type="submit" class="search-btn"><i class="bi bi-search"></i></button>
+    </div>
+  </form>
+
+  <!-- Botones del extremo derecho -->
+  <div class="d-flex align-items-center gap-2">
+
+    <!-- Botón Cargar: usando estilos sutiles de Bootstrap -->
+    <button class="btn btn-dark border-secondary opacity-90 rounded-3 px-3 btn-sm fw-bold d-flex align-items-center text-white" data-bs-toggle="modal" data-bs-target="#modalPublicar">
+      <i class="bi bi-plus-lg me-1.5"></i> Cargar
+    </button>
+
+    <!-- Botón Editar: Usando nuestro color de acento personalizado -->
+    {% if request.user == perfil.usuario %}
+      <button class="btn btn-cereza btn-sm rounded-3 px-3 fw-bold d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modalEditarPerfil">
+        <i class="bi bi-pencil-square me-1.5"></i> Editar Perfil
+      </button>
+    {% endif %}
+
+  </div>
+</header>
