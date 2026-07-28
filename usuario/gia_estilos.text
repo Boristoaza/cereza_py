@@ -42,3 +42,35 @@ Botón de Reacción (Corazón): Fondo gris muy claro (btn-light) que al pasar el
 Botón de Acción Secundaria (Compartir): Un botón tipo link (btn-link), sin fondo ni bordes rígidos, usando el color gris del texto secundario (text-muted). Solo resalta el icono y el texto para no saturar la tarjeta con demasiados bloques de color.
 
 El Avatar Temporal: Un círculo perfecto (rounded-circle), con un tamaño fijo de 42px x 42px, fondo gris claro y la inicial del usuario centrada en mayúscula. Cumple la función visual de una foto sin romper la estética si el usuario no ha subido una.
+
+
+<!-- <header class="header-web d-flex align-items-center justify-content-between">
+    <a href="{% url 'feed:feed' %}" class="d-flex align-items-center text-decoration-none text-white fw-bold fs-4">
+      🍒Cereza
+    </a>
+
+    <form action="{% url 'buscador:buscar' %}" method="GET">
+      <div class="search-bar-container">
+        <input type="text" class="search-input" placeholder="Buscar creadores o posts..." name="busqueda" id="busqueda" value="{{ request.GET.busqueda }}" required>
+        <button type="submit" class="bg-transparent border-0 text-white opacity-50"><i class="bi bi-search"></i></button>
+      </div>
+    </form>
+
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn btn-outline-light rounded-1 px-3 btn-sm fw-bold border-secondary text-white" style="background-color: rgba(255,255,255,0.04);" data-bs-toggle="modal" data-bs-target="#modalPublicar">
+        <i class="bi bi-plus-lg me-1"></i> Cargar
+      </button>
+      <form action="{% url 'usuario:logout' %}" method="post" class="m-0">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm btn-outline-danger px-3 rounded-1 fw-bold" style="font-size: 0.85rem;">Cerrar sesión</button>
+      </form>
+    </div>
+  </header> -->
+
+  <!-- <aside class="sidebar-web d-none d-md-block">
+    <nav class="d-flex flex-column gap-1">
+      <a href="{% url 'feed:feed' %}" class="nav-link-web"><i class="bi bi-house-door"></i> Para ti</a>
+      <a href="#" class="nav-link-web"><i class="bi bi-people"></i> Siguiendo</a>
+      <a href="#" class="nav-link-web"><i class="bi bi-compass"></i> Explorar</a>
+    </nav>
+  </aside> -->

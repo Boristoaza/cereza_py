@@ -13,16 +13,6 @@ def buscador(request):
                                        Q(nombre_usuario__icontains=texto_busqueda))
 
 
-
-        for i in buscar:
-            # img_perfil = i.avatar
-            # return img_perfil
-            # print(i.avatar)
-            # print(i.id)
-            print(i.usuario)
-            # print(i.biografia)
-
-
         contexto = { 'busqueda': buscar  }
 
     return render(request,'busquedas.html', contexto)

@@ -62,13 +62,19 @@ def logout_view(request):
 
 
 def main_view(request):
-    nombre_usuario = Perfil.objects.filter(usuario=request.user)
-    for i in nombre_usuario:
-        print(i)
-    return render(request,'main.html')
+    if request.user.is_authenticated:
+        return redirect('usuario:perfil')
+    else:
+        return redirect('usuario:login')
 
 @login_required
 def perfil_view(request):
+    from django.db.models import Q
+
+    buscar = Perfil.objects.filter(
+        Q(usuario__username='boris ') |
+        Q(nombre_usuario='boris ')
+    )
 
     # Obtiene el perfil o lo crea si es la primera vez
     perfil, created = Perfil.objects.get_or_create(
@@ -130,7 +136,6 @@ def perfil_view(request):
     )
     .order_by('-id')
 )
-
     contexto = {
         'perfil': perfil,
         'posts': publicaciones,
@@ -143,8 +148,14 @@ def perfil_view(request):
     return render(request, 'perfil.html', contexto)
 
 @login_required
-def ver_perfil(request, id):
-    perfil = Perfil.objects.get(id=id)
+def ver_perfil(request, usuario):
+    from django.db.models import Q
+
+    perfil = get_object_or_404(
+        Perfil,
+        Q(nombre_usuario=usuario) |
+        Q(usuario__username=usuario)
+    )
 
     seguidos = (
         Follower.objects
@@ -161,21 +172,23 @@ def ver_perfil(request, id):
     cantidad_seguidores = seguidores.count()
     cantidad_seguidos = seguidos.count()
 
-    post = Post.objects.filter(
-        usuario=perfil.usuario
-    ).select_related(
-        'usuario', 'usuario__perfil'
-    ).prefetch_related(
-        'comentario_set', 'reaccion_set', 'pack_set'
+    posts = (
+        Post.objects.filter(usuario=perfil.usuario)
+        .select_related('usuario', 'usuario__perfil')
+        .prefetch_related(
+            'comentario_set',
+            'reaccion_set',
+            'pack_set'
+        )
     )
 
     contexto = {
         'perfil': perfil,
-        'posts': post,
-        'seguidos':seguidos,
-        'seguidores':seguidores,
+        'posts': posts,
+        'seguidos': seguidos,
+        'seguidores': seguidores,
         'cantidad_seguidores': cantidad_seguidores,
-        'cantidas_seguidos': cantidad_seguidos,
+        'cantidad_seguidos': cantidad_seguidos,
     }
 
     return render(request, 'perfil.html', contexto)

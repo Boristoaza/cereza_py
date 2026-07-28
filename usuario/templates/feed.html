@@ -1,13 +1,22 @@
-{% extends 'master.html' %}
+{% extends 'main.html' %}
 {% load static %}
 
-{% block css %}
-<link rel="stylesheet" href="{% static 'css/post_feed.css' %}">
-{% endblock %}
-
 {% block content %}
-   <div class="contenedor" style=" margin-top: 50px;" >
-       {% include 'components/historias.html' %}
-       {% include 'components/post_feed.html' %}
-   </div>
+<style>
+.contenido-principal{
+    width: 100%;
+    max-width: 900px;
+    margin: 30px auto 0;
+}
+.contenedor_post_feed{
+    margin-left: -85px;
+}
+</style>
+<div class="contenedor-principal">
+    <div class="contenedor_post_feed">
+        {% include 'components/post_feed.html' %}
+    </div>
+        <!-- {% include 'components/historias.html' %} -->
+
+</div>
 {% endblock %}
