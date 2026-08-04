@@ -5,6 +5,7 @@ from post.models import Post , Pack
 from reacciones.models import Reaccion
 from comentario.models import Comentario
 from usuario.models import Perfil
+
 def feed_view(request):
 
   ids_seguidos = Follower.objects.filter(
@@ -18,16 +19,7 @@ def feed_view(request):
         .prefetch_related('pack_set')
     )
 
-
   post = Post.objects.filter(usuario=request.user).select_related('usuario__perfil').prefetch_related('pack_set')
-
-
-
-#   consultar_post = Post.objects.get(id=17)
-
-
-
-
 
   return render(
       request,
@@ -37,3 +29,6 @@ def feed_view(request):
           'post':post
       }
   )
+
+def explorer_view(request):
+  return render(request,'explorar.html')

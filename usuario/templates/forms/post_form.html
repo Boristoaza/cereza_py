@@ -1,0 +1,112 @@
+<form action="{% url 'publicacion:publicar' %}" method="post" enctype="multipart/form-data" class="form_publicar">
+    {% csrf_token %}
+
+    <div class="crear_post">
+
+        <h5 class="titulo_publicar">Crear publicación 🍒</h5>
+
+        <textarea
+            name="descripcion"
+            id="descripcion"
+            rows="4"
+            placeholder="¿Qué estás pensando?"></textarea>
+
+        <div class="acciones_publicar">
+
+            <label for="publicacion" class="btn_archivo">
+                <i class="bi bi-images"></i>
+                <span>Seleccionar Foto o Video </span>
+            </label>
+
+            <input type="file" name="publicacion" id="publicacion" multiple hidden>
+
+            <button type="submit" class="btn_publicar">
+                <i class="bi bi-send-fill"></i>
+                Publicar
+            </button>
+
+        </div>
+
+    </div>
+</form>
+
+<style>
+ .modal-content{
+    background:#121212;
+    border:1px solid #2b2b2b;
+    border-radius:18px;
+}
+
+.crear_post{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.titulo_publicar{
+    color:white;
+    text-align:center;
+    margin:0;
+    font-weight:600;
+}
+
+#descripcion{
+    width:100%;
+    min-height:120px;
+    resize:none;
+    background:#1d1d1d;
+    color:white;
+    border:1px solid #2b2b2b;
+    border-radius:12px;
+    padding:15px;
+    outline:none;
+}
+
+#descripcion::placeholder{
+    color:#8a8a8a;
+}
+
+.acciones_publicar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.btn_archivo{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:white;
+    cursor:pointer;
+    font-size:15px;
+    padding:10px 15px;
+    border-radius:10px;
+    transition:.2s;
+}
+
+.btn_archivo:hover{
+    background:#1d1d1d;
+}
+
+.btn_archivo i{
+    font-size:24px;
+    color:#ff2a5f;
+}
+
+.btn_publicar{
+    background:#ff2a5f;
+    color:white;
+    border:none;
+    padding:10px 22px;
+    border-radius:10px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    transition:.2s;
+}
+
+.btn_publicar:hover{
+    opacity:.9;
+}
+</style>

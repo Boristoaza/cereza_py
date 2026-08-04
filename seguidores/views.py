@@ -28,3 +28,8 @@ def eliminar_seguidor(resquest):
     id_usuerio = resquest.POST.get('id_usuario')
     return HttpResponse('hastad vales verga')
   return HttpResponse('esto esel de seguir')
+
+
+def ver_seguidos(request, usuario):
+    print(usuario)
+    return redirect('usuario:perfil')

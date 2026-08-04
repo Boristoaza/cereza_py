@@ -3,51 +3,87 @@
 <link rel="stylesheet" href="{% static 'css/post_feed.css' %}">
 
 <div class="contenedor_feed">
-{% for i in post %}
-<div class="contenedor_post">
-    {% if i.post_original %}
-       {% for pack in i.post_original.pack_set.all %}
-          <img src="{{ pack.imagen.url }}" class="imagen_post">
-      {% endfor %}
-    {% else %}
-      {% for pack in i.pack_set.all %}
-          <img src="{{ pack.imagen.url }}" class="imagen_post">
-      {% endfor %}
-    {% endif %}
 
-    <div class="degradado"></div>
+    {% for i in post %}
 
-    <div class="info">
-        <h5>{{ i.usuario.perfil.nombre_usuario }}</h5>
-        <p>{{ i.descripcion }}</p>
+    <div class="contenedor_post">
+
+        {% if i.post_original %}
+
+        {% for pack in i.post_original.pack_set.all %}
+
+        {% if pack.imagen %}
+        <img src="{{ pack.imagen.url }}" class="imagen_post">
+        {% endif %}
+
+        {% if pack.video %}
+        <video class="imagen_post" autoplay muted loop playsinline>
+            <source src="{{ pack.video.url }}" type="video/mp4">
+        </video>
+        {% endif %}
+
+        {% endfor %}
+
+        {% else %}
+
+        {% for pack in i.pack_set.all %}
+
+        {% if pack.imagen %}
+        <img src="{{ pack.imagen.url }}" class="imagen_post">
+        {% endif %}
+
+        {% if pack.video %}
+        <video class="imagen_post" autoplay muted loop playsinline>
+            <source src="{{ pack.video.url }}" type="video/mp4">
+        </video>
+        {% endif %}
+
+        {% endfor %}
+
+        {% endif %}
+
+
+        <div class="degradado"></div>
+
+        <div class="info">
+            <h5>{{ i.usuario.perfil.nombre_usuario }}</h5>
+            <p>{{ i.descripcion }}</p>
+            <a href="/ver_perfil/{{i.usuario.perfil.nombre_usuario}}" class="tiktok-btn-primary" style="text-decoration: none;">
+                <i class="bi bi-person-fill"></i> Ver Perfil
+            </a>
+        </div>
+        <div class="acciones">
+
+            <div class="accion">
+                <img src="/media/{{ i.usuario.perfil.avatar }}" class="avatar">
+            </div>
+
+            <div class="accion">
+                <i class="bi bi-heart-fill"></i>
+                <span>15.2K</span>
+            </div>
+
+            <div class="accion">
+                <i class="bi bi-chat-fill" data-bs-toggle="modal" data-bs-target="#exampleModal{{ i.id }}"></i>
+                <span>856</span>
+            </div>
+
+            <div class="accion">
+                <i class="bi bi-send-fill"></i>
+                <span>143</span>
+            </div>
+
+            <div class="accion">
+                <i class="bi bi-bookmark-fill"></i>
+                <span>92</span>
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="acciones">
-        <div class="accion">
-            <img src="/media/{{ i.usuario.perfil.avatar }}" class="avatar">
-        </div>
+    {% include 'modals/post_detalle.html' %}
 
-        <div class="accion">
-            <i class="bi bi-heart-fill"></i>
-            <span>15.2K</span>
-        </div>
+    {% endfor %}
 
-        <div class="accion">
-            <i class="bi bi-chat-fill"></i>
-            <span>856</span>
-        </div>
-
-        <div class="accion">
-            <i class="bi bi-send-fill"></i>
-            <span>143</span>
-        </div>
-
-        <div class="accion">
-            <i class="bi bi-bookmark-fill"></i>
-            <span>92</span>
-        </div>
-    </div>
-
-</div>
-{% endfor %}
 </div>

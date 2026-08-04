@@ -1,0 +1,467 @@
+<div class="contenedor_editar_perfil">
+
+
+    <!-- FOTO -->
+    <form action="" method="post" enctype="multipart/form-data" class="tarjeta_edicion">
+        {% csrf_token %}
+
+        <div class="info_campo">
+            <span class="titulo_campo">
+                <i class="bi bi-person-circle"></i>
+                Foto de perfil
+            </span>
+        </div>
+
+        <div class="control_campo">
+            <input type="file"
+                   name="avatar"
+                   id="avatar"
+                   class="input_oculto"
+                   accept="image/*">
+
+            <label for="avatar"
+                   class="falso_input_file"
+                   id="label_avatar">
+
+                <i class="bi bi-camera-fill"></i>
+
+                <span class="texto_file">
+                    Seleccionar imagen
+                </span>
+
+            </label>
+        </div>
+
+        <button type="submit" class="btn_guardar_unico">
+            <i class="bi bi-check-lg"></i>
+        </button>
+
+    </form>
+
+    <!-- BANNER -->
+    <form action="" method="post" enctype="multipart/form-data" class="tarjeta_edicion">
+        {% csrf_token %}
+
+        <div class="info_campo">
+            <span class="titulo_campo">
+                <i class="bi bi-image"></i>
+                Banner
+            </span>
+        </div>
+
+        <div class="control_campo">
+
+            <input type="file"
+                   name="archivo"
+                   id="archivo"
+                   class="input_oculto"
+                   accept="image/*">
+
+            <label for="archivo"
+                   class="falso_input_file"
+                   id="label_archivo">
+
+                <i class="bi bi-card-image"></i>
+
+                <span class="texto_file">
+                    Seleccionar imagen
+                </span>
+
+            </label>
+
+        </div>
+
+        <button type="submit" class="btn_guardar_unico">
+            <i class="bi bi-check-lg"></i>
+        </button>
+
+    </form>
+
+    <!-- USUARIO -->
+    <form action="" method="post" class="tarjeta_edicion">
+
+        {% csrf_token %}
+
+        <div class="info_campo">
+
+            <span class="titulo_campo">
+                <i class="bi bi-at"></i>
+                Usuario
+            </span>
+
+        </div>
+
+        <div class="control_campo">
+
+            <input type="text"
+                   name="nombre_usuario"
+                   placeholder="@usuario">
+
+        </div>
+
+        <button type="submit" class="btn_guardar_unico">
+            <i class="bi bi-check-lg"></i>
+        </button>
+
+    </form>
+
+    <!-- BIO -->
+    <form action="" method="post" class="tarjeta_edicion">
+
+        {% csrf_token %}
+
+        <div class="info_campo">
+
+            <span class="titulo_campo">
+                <i class="bi bi-card-text"></i>
+                Biografía
+            </span>
+
+        </div>
+
+        <div class="control_campo">
+
+            <input type="text"
+                   name="biografia"
+                   placeholder="Cuéntanos algo sobre ti">
+
+        </div>
+
+        <button type="submit" class="btn_guardar_unico">
+            <i class="bi bi-check-lg"></i>
+        </button>
+
+    </form>
+
+</div>
+
+<script>
+
+function actualizarNombreArchivo(inputId,labelId,texto){
+
+    const input=document.getElementById(inputId);
+
+    const textoLabel=document.querySelector(`#${labelId} .texto_file`);
+
+    input.addEventListener("change",function(){
+
+        if(this.files.length){
+
+            textoLabel.textContent=this.files[0].name;
+
+            textoLabel.style.color="#fff";
+
+        }else{
+
+            textoLabel.textContent=texto;
+
+            textoLabel.style.color="#8e8e93";
+
+        }
+
+    });
+
+}
+
+actualizarNombreArchivo(
+"avatar",
+"label_avatar",
+"Seleccionar imagen"
+);
+
+actualizarNombreArchivo(
+"archivo",
+"label_archivo",
+"Seleccionar imagen"
+);
+
+</script>
+
+<style>
+
+:root{
+
+    --fondo:#121212;
+    --tarjeta:#1b1b1b;
+    --borde:#2b2b2b;
+    --rosa:#ff2a5f;
+    --rosa_hover:#ff4b78;
+    --texto:#fff;
+    --muted:#8e8e93;
+
+}
+
+/* ================= MODAL ================= */
+
+.modal-content{
+
+    background:var(--fondo);
+
+    border:none;
+
+    border-radius:24px;
+    border-top-left-radius: 0%;
+    border-top-right-radius: 0%;
+
+    overflow:hidden;
+
+    box-shadow:0 30px 60px rgba(0,0,0,.6);
+
+}
+
+/* ================= CONTENEDOR ================= */
+
+.contenedor_editar_perfil{
+
+    background:var(--tarjeta);
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+}
+
+/* ================= CABECERA ================= */
+
+.cabecera_editar{
+
+    background:#171717;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    border-bottom:1px solid var(--borde);
+
+}
+
+.logo_cereza{
+
+    width:85px;
+
+    height:85px;
+
+    margin:auto;
+
+    margin-bottom:18px;
+
+    border-radius:22px;
+
+    background:linear-gradient(135deg,#ff2a5f,#ff6d55);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:42px;
+
+    box-shadow:0 0 35px rgba(255,42,95,.35);
+
+}
+
+.cabecera_editar h2{
+
+    margin:0;
+
+    color:white;
+
+    font-size:28px;
+
+}
+
+.cabecera_editar p{
+
+    margin-top:8px;
+
+    color:var(--muted);
+
+    font-size:14px;
+
+}
+
+/* ================= FILAS ================= */
+
+.tarjeta_edicion{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    padding:18px 24px;
+
+    border-bottom:1px solid var(--borde);
+
+}
+
+.tarjeta_edicion:last-child{
+
+    border-bottom:none;
+
+}
+
+/* ================= TITULO ================= */
+
+.info_campo{
+
+    width:170px;
+
+    flex-shrink:0;
+
+}
+
+.titulo_campo{
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:15px;
+
+}
+
+.titulo_campo i{
+
+    color:var(--rosa);
+
+    font-size:19px;
+
+}
+
+/* ================= INPUT ================= */
+
+.control_campo{
+
+    flex:1;
+
+}
+
+.input_oculto{
+
+    display:none;
+
+}
+
+.control_campo input[type=text],
+.falso_input_file{
+
+    width:100%;
+
+    height:48px;
+
+    background:#121212;
+
+    border:1px solid var(--borde);
+
+    border-radius:14px;
+
+    color:white;
+
+    padding:0 16px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    box-sizing:border-box;
+
+}
+
+.control_campo input[type=text]{
+
+    cursor:text;
+
+}
+
+.control_campo input[type=text]:focus{
+
+    outline:none;
+
+    border-color:var(--rosa);
+
+}
+
+.falso_input_file:hover{
+
+    border-color:var(--rosa);
+
+}
+
+.texto_file{
+
+    color:var(--muted);
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+}
+
+.falso_input_file i{
+
+    color:var(--rosa);
+
+}
+
+/* ================= BOTON ================= */
+
+.btn_guardar_unico{
+
+    width:48px;
+
+    height:48px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:var(--rosa);
+
+    color:white;
+
+    font-size:20px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.btn_guardar_unico:hover{
+
+    background:var(--rosa_hover);
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 20px rgba(255,42,95,.35);
+
+}
+
+.btn_guardar_unico i{
+
+    pointer-events:none;
+
+}
+
+</style>

@@ -6,4 +6,5 @@ app_name = 'seguir'
 urlpatterns = [
   path('seguir/', views.seguir, name='seguir'),
   path('eliminarSeguidor/',views.eliminar_seguidor , name='eliminar_seguidor'),
+  path('ver_seguidos/<str:usuario>/', views.ver_seguidos, name='ver_seguidos'),
 ]

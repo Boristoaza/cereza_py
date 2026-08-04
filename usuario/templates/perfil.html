@@ -9,8 +9,12 @@
 
     {% include "components/header.html" %}
 
-    <div class="contenedor_post_perfil" style="margin-left: 134px; margin-top: -100px;">
+    <div class="contenedor_post_perfil" style="margin-left: 134px; margin-top: -100px; background-color: black;">
       {% include "components/post_grid.html" %}
+      {% include "modals/seguidores_modal.html" %}
+      {% include "modals/seguidos_modal.html" %}
     </div>
+
+
 
 {% endblock %}

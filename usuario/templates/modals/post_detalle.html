@@ -1,0 +1,124 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/post_detalle.css' %}">
+
+<div class="modal fade" id="exampleModal{{ i.id }}" tabindex="-1" aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+
+    <div class="modal-content modal_post">
+
+      <button type="button"
+              class="btn-close btn-close-white cerrar_modal"
+              data-bs-dismiss="modal">
+      </button>
+
+
+      <div class="modal-body cuerpo_modal">
+
+
+        <div class="contenedor_imagen">
+
+          {% if i.post_original %}
+
+            {% for x in i.post_original.pack_set.all %}
+
+                {% if x.imagen %}
+                    <img src="{{ x.imagen.url }}" class="imagen_modal">
+                {% endif %}
+
+
+                {% if x.video %}
+                    <video class="imagen_modal" controls>
+                        <source src="{{ x.video.url }}" type="video/mp4">
+                    </video>
+                {% endif %}
+
+            {% endfor %}
+
+
+          {% else %}
+
+
+            {% for x in i.pack_set.all %}
+
+
+                {% if x.imagen %}
+                    <img src="{{ x.imagen.url }}" class="imagen_modal">
+                {% endif %}
+
+
+                {% if x.video %}
+                    <video class="imagen_modal" controls>
+                        <source src="{{ x.video.url }}" type="video/mp4">
+                    </video>
+                {% endif %}
+
+
+            {% endfor %}
+
+
+          {% endif %}
+
+        </div>
+
+
+
+        <div class="mensajes_post">
+
+
+          <div class="descripcion_post">
+
+            <h5>
+              {{ i.usuario.perfil.nombre_usuario }}
+            </h5>
+
+            <p>
+              {{ i.descripcion }}
+            </p>
+
+          </div>
+
+
+
+          <div class="lista_comentarios">
+            <!-- comentarios -->
+          </div>
+
+
+
+          <div class="input_comentar">
+
+            <form action="" method="post">
+
+              {% csrf_token %}
+
+              <input
+                type="text"
+                name="comentar"
+                placeholder="Escribe un comentario..."
+              >
+
+
+              <button type="submit">
+
+                <i class="bi bi-send-fill"></i>
+
+              </button>
+
+
+            </form>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>

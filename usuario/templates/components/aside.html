@@ -1,15 +1,24 @@
-<aside class="sidebar-web d-none d-md-block">
+<aside class="sidebar-web d-none d-md-block" style="background-color: black; border: none;">
   <nav class="d-flex flex-column gap-1">
-    <a href="{% url 'usuario:perfil' %}" class="nav-link-web">
+    <a href="{% url 'usuario:perfil' %}" class="nav-link-web" >
       <i class="bi bi-house-door-fill"></i> Perfil
     </a>
 
-    <a href="#" class="nav-link-web">
-      <i class="bi bi-people"></i> Siguiendo
+    <a href="{% url 'feed:feed' %}" class="nav-link-web">
+      <i class="bi bi-people"></i>Siguiendo
     </a>
 
-    <a href="{% url 'feed:feed' %}" class="nav-link-web">
-      <i class="bi bi-compass"></i> Explorar
+    <a href="{% url 'feed:explorar' %}" class="nav-link-web">
+      <i class="bi bi-compass"></i>Explorar
+    </a>
+
+
+    <a href="" class="nav-link-web">
+      <i class="bi bi-bell-fill"></i> Notificaciones
+    </a>
+
+    <a href="" class="nav-link-web">
+      <i class="bi bi-chat-dots-fill"></i> Mensajes
     </a>
   </nav>
 </aside>

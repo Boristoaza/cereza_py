@@ -1,0 +1,172 @@
+<!-- Modal Seguidos (A quiénes sigue) -->
+<div class="modal fade" id="seguidosModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content modal_seguidores">
+
+            <div class="modal-header" style="background-color: black;">
+                <h5 class="modal-title">Seguidos 🍒</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-0" style="background-color: black;">
+                <!-- Usuario 1 -->
+                <div class="usuario_seguidor">
+                    <div class="usuario_info">
+                        <img src="https://picsum.photos/100?random=11" class="avatar_usuario">
+                        <div>
+                            <h6>kevin_code</h6>
+                            <small>Kevin Martínez</small>
+                        </div>
+                    </div>
+                    <!-- Botón clásico de "Ya lo sigues" -->
+                    <button class="btn btn-siguiendo-dark btn-sm">
+                        Siguiendo
+                    </button>
+                </div>
+
+                <!-- Usuario 2 -->
+                <div class="usuario_seguidor">
+                    <div class="usuario_info">
+                        <img src="https://picsum.photos/100?random=12" class="avatar_usuario">
+                        <div>
+                            <h6>elena.design</h6>
+                            <small>Elena Rostova</small>
+                        </div>
+                    </div>
+                    <button class="btn btn-siguiendo-dark btn-sm">
+                        Siguiendo
+                    </button>
+                    {% with usuario="julio" %}
+                        <a href="{% url 'seguir:ver_seguidos' usuario %}" class="tiktok-btn-primary">
+                            <i class="bi bi-person-fill"></i> Ver Perfil
+                        </a>
+                    {% endwith %}
+                </div>
+
+                <!-- Usuario 3 (Caso especial: Alguien que sigues pero te da la opción destacada) -->
+                <div class="usuario_seguidor">
+                    <div class="usuario_info">
+                        <img src="https://picsum.photos/100?random=13" class="avatar_usuario">
+                        <div>
+                            <h6>GamerPro_99</h6>
+                            <small>Christian Torres</small>
+                        </div>
+                    </div>
+                    <!-- Tu color #ff2a5f por si quieres destacar una acción en esta lista -->
+                    <button class="btn btn-seguir-cherry btn-sm">
+                        Ver Perfil
+                    </button>
+                </div>
+
+                <!-- Usuario 4 -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Estilos del contenedor del Modal */
+    .modal_seguidores {
+        background-color: #121212 !important;
+        border: 1px solid #262626;
+        border-radius: 12px;
+        color: #ffffff;
+    }
+
+    /* Encabezado */
+    .modal_seguidores .modal-header {
+        border-bottom: 1px solid #262626;
+        justify-content: center;
+        position: relative;
+    }
+
+    .modal_seguidores .modal-header .modal-title {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .modal_seguidores .modal-header .btn-close {
+        position: absolute;
+        right: 15px;
+    }
+
+    /* Cuerpo del modal y scroll */
+    .modal_seguidores .modal-body {
+        max-height: 400px;
+        /* Limita la altura interna para el scroll */
+        overflow-y: auto;
+    }
+
+    /* Fila de cada usuario */
+    .usuario_seguidor {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        transition: background-color 0.2s ease;
+    }
+
+    .usuario_seguidor:hover {
+        background-color: #1a1a1a;
+    }
+
+    /* Info del usuario (Avatar + Textos) */
+    .usuario_info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .avatar_usuario {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid #262626;
+    }
+
+    .usuario_info h6 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #f5f5f5;
+    }
+
+    .usuario_info small {
+        display: block;
+        font-size: 13px;
+        color: #a8a8a8;
+    }
+
+    /* Botón "Seguir" (Acción principal con tu color #ff2a5f) */
+    .btn-seguir-cherry {
+        background-color: #ff2a5f !important;
+        border: none !important;
+        color: white !important;
+        font-weight: 600;
+        padding: 6px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .btn-seguir-cherry:hover {
+        background-color: #e02050 !important;
+    }
+
+    /* Botón "Siguiendo" (Estado secundario/silenciado) */
+    .btn-siguiendo-dark {
+        background-color: #363636 !important;
+        border: none !important;
+        color: #ffffff !important;
+        font-weight: 600;
+        padding: 6px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .btn-siguiendo-dark:hover {
+        background-color: #454545 !important;
+    }
+</style>

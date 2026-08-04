@@ -16,4 +16,5 @@ class Post(models.Model):
 
 class Pack(models.Model):
    post = models.ForeignKey(Post,on_delete=models.CASCADE)
-   imagen = models.ImageField(upload_to='post')
+   imagen = models.ImageField(upload_to='post/imagen', null=True,blank=True)
+   video = models.FileField(upload_to='post/video', null=True , blank=True)

@@ -13,7 +13,7 @@
 </div>
 {% endif %}
 
-<div class="profile-info-wrapper">
+<div class="profile-info-wrapper" style="background-color: black;">
 
     <section class="profile-header-info">
 
@@ -36,14 +36,14 @@
 
     <section class="counts-container mb-3">
 
-        <div class="count-item">
+        <div class="count-item" data-bs-toggle="modal" data-bs-target="#seguidosModal">
             <strong>{{ seguidos.count|default:"0" }}</strong>
-            Siguiendo
+            <a href="#" style="color: aliceblue; text-decoration: none;">Siguiendo</a>
         </div>
 
-        <div class="count-item">
+        <div class="count-item" data-bs-toggle="modal" data-bs-target="#seguidoresModal">
             <strong>{{ seguidores.count|default:"0" }}</strong>
-            Seguidores
+            <a href="#" style="text-decoration: none; color: aliceblue;">Seguidores</a>
         </div>
 
         <div class="count-item">
@@ -80,10 +80,25 @@
                     Cerrar sesión
                 </button>
             </form>
-
         {% endif %}
 
     </div>
 
 </div>
 {% endblock %}
+
+<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <form action="{% url 'usuario:perfil' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ formulario.avatar }}
+            <button type="submit"> subir foto </button>
+        </form>
+    </div>
+</div>

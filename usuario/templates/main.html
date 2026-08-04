@@ -11,16 +11,24 @@
 
 {% block body %}
 
-<div class="navbar-contenedor">
-  {% include "components/navbar.html" %}
-</div>
+{% if request.user.is_authenticated %}
 
-<aside class="sidebar-web">
-  {% include "components/aside.html" %}
-</aside>
+    <div class="navbar-contenedor">
+        {% include "components/navbar.html" %}
+    </div>
 
-<main class="main-profile-content">
-  {% block content %}{% endblock %}
-</main>
+    <aside class="sidebar-web">
+        {% include "components/aside.html" %}
+    </aside>
+
+    <main class="main-profile-content" style="background-color: black;">
+        {% block content %}{% endblock %}
+    </main>
+
+{% else %}
+
+    {% block content_guest %}{% endblock %}
+
+{% endif %}
 
 {% endblock %}

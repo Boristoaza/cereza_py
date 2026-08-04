@@ -1,8 +1,12 @@
-{% extends "master.html" %}
+{% extends "main.html" %}
 {% load static %}
 
-{% block content %}
 
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content_guest  %}
 <div class="login-wrapper">
 
     <!-- Encabezado -->

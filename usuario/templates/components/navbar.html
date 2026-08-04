@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <!-- HEADER / TOP NAV -->
-<header class="header-web d-flex align-items-center justify-content-between px-4">
+<header class="header-web d-flex align-items-center justify-content-between px-4" style="background-color: black; border: none;">
 
   <!-- Logo -->
   <a href="#" class="d-flex align-items-center text-decoration-none text-white fw-bold fs-4">
@@ -10,7 +10,8 @@
   <!-- Buscador Integrado (Se oculta en pantallas pequeñas con d-none d-md-block) -->
   <form action="{% url 'buscador:buscar' %}" method="GET" class="d-none d-md-block">
     <div class="search-bar-container">
-      <input type="text" class="search-input" placeholder="Buscar creadores o posts..." name="busqueda" id="busqueda" required>
+      <input type="text" class="search-input" placeholder="Buscar creadores o posts..." name="busqueda" id="busqueda"
+        required>
       <button type="submit" class="search-btn"><i class="bi bi-search"></i></button>
     </div>
   </form>
@@ -19,16 +20,83 @@
   <div class="d-flex align-items-center gap-2">
 
     <!-- Botón Cargar: usando estilos sutiles de Bootstrap -->
-    <button class="btn btn-dark border-secondary opacity-90 rounded-3 px-3 btn-sm fw-bold d-flex align-items-center text-white" data-bs-toggle="modal" data-bs-target="#modalPublicar">
-      <i class="bi bi-plus-lg me-1.5"></i> Cargar
+    <button
+      class="btn btn-dark border-secondary opacity-90 rounded-3 px-3 btn-sm fw-bold d-flex align-items-center text-white"
+      data-bs-toggle="modal" data-bs-target="#publicar">
+      <i class="bi bi-plus-lg me-2"></i>
+      Cargar
     </button>
 
     <!-- Botón Editar: Usando nuestro color de acento personalizado -->
     {% if request.user == perfil.usuario %}
-      <button class="btn btn-cereza btn-sm rounded-3 px-3 fw-bold d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modalEditarPerfil">
-        <i class="bi bi-pencil-square me-1.5"></i> Editar Perfil
-      </button>
+    <button class="btn btn-cereza btn-sm rounded-3 px-3 fw-bold d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#editar_model">
+      <i class="bi bi-pencil-square me-1.5"></i> Editar Perfil
+    </button>
     {% endif %}
 
   </div>
 </header>
+
+<!-- Modal -->
+<div class="modal fade" id="publicar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% include 'forms/post_form.html' %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editar_model" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content modal_cereza">
+
+            <div class="cabecera_modal">
+
+                <h3 class="titulo_modal">
+                    Editar Perfil 🍒
+                </h3>
+
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body p-0">
+                {% include 'forms/editar_perfil.html' %}
+            </div>
+
+        </div>
+    </div>
+</div>
+<style>
+  .modal_cereza{
+    background:#121212;
+    border:none;
+    border-radius:22px;
+    overflow:hidden;
+}
+
+.cabecera_modal{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 24px;
+    border-bottom:1px solid #2b2b2b;
+}
+
+.titulo_modal{
+    margin:0;
+    color:#fff;
+    font-size:24px;
+    font-weight:700;
+}
+
+.btn-close{
+    margin:0 !important;
+}
+</style>

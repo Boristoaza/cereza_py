@@ -1,8 +1,9 @@
 from django.http import HttpResponse
 from .models import Post, Pack
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def publicacion(request):
     if request.method == 'POST':
         imagenes = request.FILES.getlist('publicacion')
@@ -15,6 +16,8 @@ def publicacion(request):
             usuario=request.user,
             descripcion=descripcion
         )
+        # for i in post:
+        #     print(i.post.video)
 
         for img in imagenes:
             Pack.objects.create(
@@ -26,7 +29,7 @@ def publicacion(request):
 
     return HttpResponse("Método no permitido")
 
-
+@login_required
 def compartir_publicacion(request):
     if request.method == 'POST':
         id_post = request.POST.get('id_post')

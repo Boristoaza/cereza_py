@@ -4,13 +4,13 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate , login
 from django.contrib.auth import logout
-import uuid
 from post.models import Post,Pack
 from .models import Perfil
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from reacciones.models import Reaccion
 from seguidores.models import Follower
+from .forms import Avatar_from , Biogradia_form
 
 def registro_view(request):
     if request.user.is_authenticated:
@@ -69,13 +69,6 @@ def main_view(request):
 
 @login_required
 def perfil_view(request):
-    from django.db.models import Q
-
-    buscar = Perfil.objects.filter(
-        Q(usuario__username='boris ') |
-        Q(nombre_usuario='boris ')
-    )
-
     # Obtiene el perfil o lo crea si es la primera vez
     perfil, created = Perfil.objects.get_or_create(
         usuario=request.user
@@ -97,6 +90,28 @@ def perfil_view(request):
             perfil.biografia = biografia
 
         perfil.save()
+    # actaulizar avatar
+    if request.method == 'POST':
+        formulario = Avatar_from(
+            request.POST,
+            request.FILES,
+            instance=perfil
+        )
+        if formulario.is_valid():
+            formulario.save()
+    else:
+        formulario = Avatar_from(instance=perfil)
+
+    # descripcion
+    if request.method == 'POST':
+        biografia = Biogradia_form(request.POST, instance=perfil)
+        if biografia.is_valid():
+            biografia.save()
+    else:
+        biografia = Biogradia_form(instance=perfil)
+
+
+
 
     seguidos = (
         Follower.objects
@@ -136,8 +151,12 @@ def perfil_view(request):
     )
     .order_by('-id')
 )
+    for i in publicaciones:
+        print(i)
     contexto = {
         'perfil': perfil,
+        'formulario':formulario,
+        'biografia':biografia,
         'posts': publicaciones,
         'seguidos': seguidos,
         'seguidores': seguidores,

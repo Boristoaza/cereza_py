@@ -1,0 +1,70 @@
+<form action="" method="post" enctype="multipart/form-data" class="form_archivo">
+    {% csrf_token %}
+
+    <input type="file" name="archivo" id="archivo" hidden>
+
+    <label for="archivo" class="btn_seleccionar">
+        <i class="bi bi-image"></i>
+        Seleccionar imagen
+    </label>
+
+    <button type="submit" class="btn_guardar">
+        <i class="bi bi-check-circle"></i>
+        Guardar
+    </button>
+
+</form>
+<style>
+  .form_archivo{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    background:#121212;
+    padding:20px;
+    border-radius:16px;
+}
+
+.btn_seleccionar{
+    width:100%;
+    padding:14px;
+    border-radius:12px;
+    background:#1f1f1f;
+    color:white;
+    border:1px solid #2b2b2b;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.btn_seleccionar i{
+    font-size:22px;
+    color:#ff2a5f;
+}
+
+.btn_seleccionar:hover{
+    background:#252525;
+}
+
+.btn_guardar{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:12px;
+    background:#ff2a5f;
+    color:white;
+    font-weight:600;
+    font-size:16px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    transition:.2s;
+}
+
+.btn_guardar:hover{
+    opacity:.9;
+}
+</style>
