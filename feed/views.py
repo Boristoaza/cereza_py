@@ -19,7 +19,7 @@ def feed_view(request):
         .prefetch_related('pack_set')
     )
 
-  post = Post.objects.filter(usuario=request.user).select_related('usuario__perfil').prefetch_related('pack_set')
+  post = Post.objects.filter(usuario=request.user).select_related('usuario__perfil').prefetch_related('pack_set').order_by('-id')
 
   return render(
       request,

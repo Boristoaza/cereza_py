@@ -48,15 +48,14 @@
         <div class="info">
             <h5>{{ i.usuario.perfil.nombre_usuario }}</h5>
             <p>{{ i.descripcion }}</p>
-            <a href="/ver_perfil/{{i.usuario.perfil.nombre_usuario}}" class="tiktok-btn-primary" style="text-decoration: none;">
-                <i class="bi bi-person-fill"></i> Ver Perfil
-            </a>
         </div>
         <div class="acciones">
 
-            <div class="accion">
-                <img src="/media/{{ i.usuario.perfil.avatar }}" class="avatar">
-            </div>
+            <a href="/ver_perfil/{{i.usuario.perfil.nombre_usuario}}"  style="text-decoration: none;">
+                <div class="accion">
+                    <img src="/media/{{ i.usuario.perfil.avatar }}" class="avatar">
+                </div>
+            </a>
 
             <div class="accion">
                 <i class="bi bi-heart-fill"></i>

@@ -1,163 +1,70 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/seguidores.css' %}">
+{% endblock %}
+
 <!-- Modal Seguidores -->
 <div class="modal fade" id="seguidoresModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content modal_seguidores">
-
             <div class="modal-header" style="background-color:black;">
                 <h5 class="modal-title">Seguidores 🍒</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
 
             <div class="modal-body p-0" style="background-color: black;">
-
-                <!-- Usuario 1: Para Seguir -->
-                <div class="usuario_seguidor">
-                    <div class="usuario_info">
-                        <img src="https://picsum.photos/100?random=1" class="avatar_usuario">
-                        <div>
-                            <h6>boris_toaza</h6>
-                            <small>Boris Isaac Toaza</small>
-                        </div>
-                    </div>
-                    <!-- Usamos el color #ff2a5f -->
-                    <button class="btn btn-seguir-cherry btn-sm">
-                        Seguir
-                    </button>
-                </div>
-
-                <!-- Usuario 2: Ya lo sigues -->
-                <div class="usuario_seguidor">
-                    <div class="usuario_info">
-                        <img src="https://picsum.photos/100?random=2" class="avatar_usuario">
-                        <div>
-                            <h6>laura.dev</h6>
-                            <small>Laura Sánchez</small>
-                        </div>
-                    </div>
-                    <!-- Botón más discreto estilo Instagram -->
-                    <button class="btn btn-siguiendo-dark btn-sm">
-                        Siguiendo
-                    </button>
-                </div>
-
-                <!-- Usuario 3: Para Seguir -->
-                <div class="usuario_seguidor">
-                    <div class="usuario_info">
-                        <img src="https://picsum.photos/100?random=3" class="avatar_usuario">
-                        <div>
-                            <h6>carlos_22</h6>
-                            <small>Carlos Méndez</small>
-                        </div>
-                    </div>
-                    <button class="btn btn-seguir-cherry btn-sm">
-                        Seguir
-                    </button>
-                </div>
-
+                <div id="lista_seguidores"></div>
             </div>
         </div>
     </div>
 </div>
-<style>
-  /* Estilos del contenedor del Modal */
-.modal_seguidores {
-    background-color: #121212 !important;
-    border: 1px solid #262626;
-    border-radius: 12px;
-    color: #ffffff;
-}
 
-/* Encabezado */
-.modal_seguidores .modal-header {
-    border-bottom: 1px solid #262626;
-    justify-content: center;
-    position: relative;
-}
+<script>
+    const usuario_seguidor = "{{ perfil.nombre_usuario }}";
 
-.modal_seguidores .modal-header .modal-title {
-    font-size: 16px;
-    font-weight: 600;
-}
+   const modalSeguidores = document.getElementById("seguidoresModal");
+const listaSeguidores = document.getElementById("lista_seguidores");
 
-.modal_seguidores .modal-header .btn-close {
-    position: absolute;
-    right: 15px;
-}
 
-/* Cuerpo del modal y scroll */
-.modal_seguidores .modal-body {
-    max-height: 400px; /* Limita la altura interna para el scroll */
-    overflow-y: auto;
-}
+modalSeguidores.addEventListener("shown.bs.modal", function () {
 
-/* Fila de cada usuario */
-.usuario_seguidor {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    transition: background-color 0.2s ease;
-}
+    axios.get(`/seguir/ver_seguidores/${usuario_seguidor}/`)
+        .then(response => {
 
-.usuario_seguidor:hover {
-    background-color: #1a1a1a;
-}
+            listaSeguidores.innerHTML = "";
 
-/* Info del usuario (Avatar + Textos) */
-.usuario_info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
+            response.data.forEach(item => {
 
-.avatar_usuario {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid #262626;
-}
+                const avatar = item.avatar
+                    ? `/media/${item.avatar}`
+                    : "/static/img/avatar_default.png";
 
-.usuario_info h6 {
-    margin: 0;
-    font-size: 14px;
-    font-weight: 600;
-    color: #f5f5f5;
-}
+                listaSeguidores.innerHTML += `
+                    <div class="usuario_seguidor">
+                       <a href="/ver_perfil/${item.nombre_usuario}"style="text-decoration:none;">
+                        <div class="usuario_info">
+                            <img src="${avatar}" class="avatar_usuario">
 
-.usuario_info small {
-    display: block;
-    font-size: 13px;
-    color: #a8a8a8;
-}
+                            <div>
+                                <h6>${item.nombre_usuario}</h6>
+                                <small>${item.username}</small>
+                            </div>
+                        </div>
+                        </a>
 
-/* Botón "Seguir" (Acción principal con tu color #ff2a5f) */
-.btn-seguir-cherry {
-    background-color: #ff2a5f !important;
-    border: none !important;
-    color: white !important;
-    font-weight: 600;
-    padding: 6px 16px;
-    border-radius: 8px;
-    font-size: 14px;
-}
+                        <button class="btn btn-siguiendo-dark btn-sm">
+                            Siguiendo
+                        </button>
 
-.btn-seguir-cherry:hover {
-    background-color: #e02050 !important;
-}
+                    </div>
+                `;
+            });
 
-/* Botón "Siguiendo" (Estado secundario/silenciado) */
-.btn-siguiendo-dark {
-    background-color: #363636 !important;
-    border: none !important;
-    color: #ffffff !important;
-    font-weight: 600;
-    padding: 6px 16px;
-    border-radius: 8px;
-    font-size: 14px;
-}
+        });
 
-.btn-siguiendo-dark:hover {
-    background-color: #454545 !important;
-}
-</style>
+});
+
+
+</script>

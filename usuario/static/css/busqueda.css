@@ -1,7 +1,11 @@
+
   body {
-      background-color: #121212;
+      background-color: black;
       color: #f1f1f1;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --color-cereza: #ff2a5f;
+      --color-cereza-hover: #e02050;
+      --bg-navbar: rgba(18, 18, 18, 0.8);
     }
 
     .header-web {
@@ -16,16 +20,49 @@
       padding: 0 24px;
     }
 
-    .search-bar-container {
-      background-color: rgba(255, 255, 255, 0.06);
-      border: 1px solid transparent;
-      border-radius: 92px;
-      padding: 0 16px;
-      width: 360px;
-      height: 38px;
-      display: flex;
-      align-items: center;
-    }
+  /* EL BUSCADOR (Estructura base) */
+.search-bar-container {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px; /* Esquinas suavizadas y modernas */
+  padding: 0 16px;
+  width: 380px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+/* Interacción de foco con Bootstrap-like ring effect */
+.search-bar-container:focus-within {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--color-cereza);
+  box-shadow: 0 0 0 3px rgba(255, 42, 95, 0.15);
+}
+
+.search-input {
+  background: none;
+  border: none;
+  color: #ffffff;
+  outline: none;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.search-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.2s ease;
+}
+
+.search-bar-container:focus-within .search-btn {
+  color: var(--color-cereza);
+}
     .search-bar-container:focus-within {
       border-color: rgba(255, 255, 255, 0.2);
     }

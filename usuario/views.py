@@ -151,8 +151,6 @@ def perfil_view(request):
     )
     .order_by('-id')
 )
-    for i in publicaciones:
-        print(i)
     contexto = {
         'perfil': perfil,
         'formulario':formulario,
@@ -199,7 +197,7 @@ def ver_perfil(request, usuario):
             'reaccion_set',
             'pack_set'
         )
-    )
+    ).order_by('-id')
 
     contexto = {
         'perfil': perfil,
