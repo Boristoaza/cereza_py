@@ -1,5 +1,6 @@
 <!-- PROFILE HEADER -->
 {% extends 'main.html' %}
+{% load static %}
 
 {% block content %}
 <!-- CORRECCIÓN: El banner ahora está dentro del bloque de contenido de Django -->
@@ -62,14 +63,21 @@
     <div class="action-buttons-area">
 
         {% if request.user != perfil.usuario %}
-
-            <form action="{% url 'seguir:seguir' %}" method="POST">
+            {% if not follow %}
+            <form id="from_follower" action="{% url 'seguir:seguir' %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="usuario" value="{{ perfil.usuario }}">
                 <button type="submit" class="tiktok-btn-primary">
                     Seguir
                 </button>
             </form>
+           {% else %}
+            <form id="form_eliminar_follow" action="{% url 'seguir:eliminar_seguido' %}" method="POST">
+               {% csrf_token %}
+               <input type="hidden" name="usuario" value="{{perfil.usuario}}">
+               <button type="submit" class="btn-siguiendo-dark">Siguiendo</button>
+            </form>
+            {% endif %}
 
         {% else %}
 
@@ -83,6 +91,7 @@
         {% endif %}
 
     </div>
+   <script src="{% static 'js/follower.js' %}"></script>
 
 </div>
 {% endblock %}

@@ -13,5 +13,15 @@ class Follower(models.Model):
         on_delete=models.CASCADE,
         related_name='seguidores'
     )
+
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['seguidor', 'seguido'],
+                name='unico_seguidor_seguido'
+            )
+        ]
+
     def __str__(self):
       return f"{self.seguidor.username} sigue a {self.seguido.username}"

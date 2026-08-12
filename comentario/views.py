@@ -1,17 +1,13 @@
-from django.http import JsonResponse
+from django.http import JsonResponse ,HttpResponse
 from .models import Comentario
 from post.models import Post
 from usuario.models import Perfil
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render
 
-
-
 def comentario(request):
-
     if request.method == "POST":
-
-        comentario_texto = request.POST.get("comentario")
+        comentario_texto = request.POST.get("comentar")
         id_post = request.POST.get("id_post")
 
         if comentario_texto and id_post:
@@ -44,8 +40,19 @@ def comentario(request):
         "mensaje": "Método no permitido"
     }, status=405)
 
-def ver_comentarios(request):
-    if request.method == "GET":
-        id_post = request.GET.get('id')
-        print(id_post)
-    return render(request,'feed.html')
+
+
+
+# esto es una prueba nada mas
+def ver_comentarios(request ,id_post):
+    consutar_comentario = Comentario.objects.filter(post_id=id_post)
+
+    lista_comentario = []
+    for i in consutar_comentario:
+        lista_comentario.append(i.comentario)
+    data = [{
+        "id_del_post":id_post,
+        "msg":"200",
+        "comentarios":lista_comentario,
+    }]
+    return JsonResponse(data , safe=False)

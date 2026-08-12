@@ -5,5 +5,5 @@ app_name='comentarios'
 
 urlpatterns = [
   path('comentar/', views.comentario , name='comentar'),
-  path('ver_comentarios/<int:id>/',views.ver_comentarios , name='ver_comentarios'),
+  path('ver_comentarios/<int:id_post>/',views.ver_comentarios , name='ver_comentarios'),
 ]

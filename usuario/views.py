@@ -167,7 +167,7 @@ def perfil_view(request):
 @login_required
 def ver_perfil(request, usuario):
     from django.db.models import Q
-
+    # este es un buscador de usuarios
     perfil = get_object_or_404(
         Perfil,
         Q(nombre_usuario=usuario) |
@@ -186,9 +186,19 @@ def ver_perfil(request, usuario):
         .select_related('seguidor__perfil')
     )
 
+    # comprobar seguidor
+    verificar_seguidor = Follower.objects.filter(
+        seguidor_id=request.user.id,
+        seguido_id=perfil.usuario.id
+    ).exists()
+
+    print(f"Es verdad que sigue: {verificar_seguidor}")
+
+    # cuenta los seguidores
     cantidad_seguidores = seguidores.count()
     cantidad_seguidos = seguidos.count()
 
+    # treae los post del usuario que se
     posts = (
         Post.objects.filter(usuario=perfil.usuario)
         .select_related('usuario', 'usuario__perfil')
@@ -199,7 +209,9 @@ def ver_perfil(request, usuario):
         )
     ).order_by('-id')
 
+
     contexto = {
+        'follow':verificar_seguidor,
         'perfil': perfil,
         'posts': posts,
         'seguidos': seguidos,

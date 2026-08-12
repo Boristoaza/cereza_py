@@ -1,39 +1,49 @@
-.contenedor_feed{
+.contenedor_feed {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
 }
 
-.contenedor_post{
-    top: 55px;
+
+/* CONTENEDOR TIPO TIKTOK */
+.contenedor_post {
     position: relative;
     width: 360px;
     height: 540px;
     overflow: hidden;
     border-radius: 20px;
-    background: black;
+    background: #000;
     flex-shrink: 0;
 }
 
-.imagen_post{
+
+/* IMÁGENES Y VIDEOS */
+.imagen_post {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background: #000;
+    display: block;
 }
 
-.degradado{
+
+/* DEGRADADO */
+.degradado {
     position: absolute;
     inset: 0;
     background: linear-gradient(
         to top,
-        rgba(0,0,0,.8),
-        rgba(0,0,0,.1) 45%,
+        rgba(0, 0, 0, .8),
+        rgba(0, 0, 0, .1) 45%,
         transparent
     );
+    z-index: 1;
 }
 
-.info{
+
+/* INFORMACIÓN DEL POST */
+.info {
     position: absolute;
     left: 15px;
     bottom: 20px;
@@ -41,23 +51,30 @@
     color: white;
 }
 
-.acciones{
+
+/* BOTONERA */
+.acciones {
     position: absolute;
     right: 12px;
     bottom: 20px;
-    z-index: 2;
+    z-index: 3;
+
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.accion{
+
+/* ACCIÓN INDIVIDUAL */
+.accion {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.avatar{
+
+/* AVATAR */
+.avatar {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -65,18 +82,23 @@
     object-fit: cover;
 }
 
-.accion i{
+
+/* ICONOS */
+.accion i {
     color: white;
     font-size: 34px;
     cursor: pointer;
     transition: .2s;
 }
 
-.accion i:hover{
+
+.accion i:hover {
     transform: scale(1.15);
 }
 
-.accion span{
+
+/* CONTADORES */
+.accion span {
     color: white;
     font-size: 13px;
     margin-top: 4px;

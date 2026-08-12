@@ -133,3 +133,14 @@
     background-color: rgba(255,255,255,.15);
     color: #fff;
 }
+
+/* boton siguiendo */
+.btn-siguiendo-dark {
+        background-color: #363636 !important;
+        border: none !important;
+        color: #ffffff !important;
+        font-weight: 600;
+        padding: 6px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+}

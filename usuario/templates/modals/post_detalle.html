@@ -7,9 +7,7 @@
 
     <div class="modal-content modal_post">
 
-      <button type="button"
-              class="btn-close btn-close-white cerrar_modal"
-              data-bs-dismiss="modal">
+      <button type="button" class="btn-close btn-close-white cerrar_modal" data-bs-dismiss="modal">
       </button>
 
 
@@ -20,41 +18,41 @@
 
           {% if i.post_original %}
 
-            {% for x in i.post_original.pack_set.all %}
+          {% for x in i.post_original.pack_set.all %}
 
-                {% if x.imagen %}
-                    <img src="{{ x.imagen.url }}" class="imagen_modal">
-                {% endif %}
+          {% if x.imagen %}
+          <img src="{{ x.imagen.url }}" class="imagen_modal">
+          {% endif %}
 
 
-                {% if x.video %}
-                    <video class="imagen_modal" controls>
-                        <source src="{{ x.video.url }}" type="video/mp4">
-                    </video>
-                {% endif %}
+          {% if x.video %}
+          <video class="imagen_modal" controls>
+            <source src="{{ x.video.url }}" type="video/mp4">
+          </video>
+          {% endif %}
 
-            {% endfor %}
+          {% endfor %}
 
 
           {% else %}
 
 
-            {% for x in i.pack_set.all %}
+          {% for x in i.pack_set.all %}
 
 
-                {% if x.imagen %}
-                    <img src="{{ x.imagen.url }}" class="imagen_modal">
-                {% endif %}
+          {% if x.imagen %}
+          <img src="{{ x.imagen.url }}" class="imagen_modal">
+          {% endif %}
 
 
-                {% if x.video %}
-                    <video class="imagen_modal" controls>
-                        <source src="{{ x.video.url }}" type="video/mp4">
-                    </video>
-                {% endif %}
+          {% if x.video %}
+          <video class="imagen_modal" controls>
+            <source src="{{ x.video.url }}" type="video/mp4">
+          </video>
+          {% endif %}
 
 
-            {% endfor %}
+          {% endfor %}
 
 
           {% endif %}
@@ -80,7 +78,7 @@
 
 
 
-          <div class="lista_comentarios">
+          <div id="lista_comentarios">
             <!-- comentarios -->
           </div>
 
@@ -88,23 +86,17 @@
 
           <div class="input_comentar">
 
-            <form action="" method="post">
+            <form id="form_comentar" action="{% url 'comentarios:comentar' %}" method="post">
 
               {% csrf_token %}
 
-              <input
-                type="text"
-                name="comentar"
-                placeholder="Escribe un comentario..."
-              >
+              <input type="text" name="comentar" class="campo_comentar" placeholder="Escribe un comentario...">
 
+              <input type="hidden" name="id_post" value="{{ i.id }}">
 
               <button type="submit">
-
                 <i class="bi bi-send-fill"></i>
-
               </button>
-
 
             </form>
 

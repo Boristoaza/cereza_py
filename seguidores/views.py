@@ -7,29 +7,55 @@ from usuario.models import Perfil
 
 
 # Create your views here.
+# def seguir(request):
+#   if request.method == 'POST':
+#     usuerio = request.POST.get('usuario')
+#     verificar_usuario = User.objects.filter(username=usuerio).first()
+
+#     if verificar_usuario :
+#      seguir_usuario = Follower.objects.create(seguidor=request.user,seguido=verificar_usuario)
+#      seguidos = Follower.objects.all().values_list('seguidos')
+#     #  return redirect('usuario:perfil')
+
+#      print(f'seguidos {seguidos}')
+#     else:
+#       print("No existe el usuario")
+
+#     return HttpResponse(f'este es el id ')
+#   return HttpResponse('esto esel de seguir')
+
+
 def seguir(request):
-  if request.method == 'POST':
-    usuerio = request.POST.get('usuario')
-    verificar_usuario = User.objects.filter(username=usuerio).first()
+    if request.method == 'POST':
+        usuario_a_seguir = request.POST.get("usuario")
 
-    if verificar_usuario :
-     seguir_usuario = Follower.objects.create(seguidor=request.user,seguido=verificar_usuario)
-     seguidos = Follower.objects.all().values_list('seguidos')
-    #  return redirect('usuario:perfil')
+        seguidido = User.objects.filter(username=usuario_a_seguir).get()
+        consultar_seguidor = Follower.objects.filter(seguido_id=seguidido.id).exists()
 
-     print(f'seguidos {seguidos}')
-    else:
-      print("No existe el usuario")
+        if consultar_seguidor == True:
+            print("estas siguiendo a esta persona")
 
-    return HttpResponse(f'este es el id ')
-  return HttpResponse('esto esel de seguir')
+        datos = [{
+            "usuario": usuario_a_seguir
+        }]
+
+        return JsonResponse(datos, safe=False)
+    return JsonResponse({
+        "error": "Método no permitido"
+    }, status=405)
 
 
-def eliminar_seguidor(resquest):
+def eliminar_seguido(resquest):
   if resquest.method == 'POST':
-    id_usuerio = resquest.POST.get('id_usuario')
-    return HttpResponse('hastad vales verga')
-  return HttpResponse('esto esel de seguir')
+    id_usuerio = resquest.POST.get('usuario')
+
+    datos =[ {
+        "usuario":id_usuerio
+    }]
+
+  return JsonResponse(datos,safe=False)
+
+
 
 def ver_seguidos(request, usuario):
     # consultar_usuario = User.objects.get(username=usuario)
@@ -61,7 +87,6 @@ def ver_seguidos(request, usuario):
         })
 
     return JsonResponse(lista_seguidos, safe=False)
-
 
 def ver_seguidores(request, usuario):
     consultar_usuario = Perfil.objects.get(nombre_usuario=usuario)
