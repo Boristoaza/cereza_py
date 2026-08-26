@@ -1,29 +1,29 @@
 
-// funcion seguir usuario
-document.addEventListener('submit', function (event) {
+// // funcion seguir usuario
+// document.addEventListener('submit', function (event) {
 
-    console.log("SUBMIT DETECTADO");
+//     console.log("SUBMIT DETECTADO");
 
-    if (!event.target.matches('#from_follower')) {
-        return;
-    }
+//     if (!event.target.matches('#from_follower')) {
+//         return;
+//     }
 
-    console.log("FORMULARIO FOLLOWER DETECTADO");
+//     console.log("FORMULARIO FOLLOWER DETECTADO");
 
-    event.preventDefault();
+//     event.preventDefault();
 
-    const formulario_follower = event.target;
-    const datos = new FormData(formulario_follower);
+//     const formulario_follower = event.target;
+//     const datos = new FormData(formulario_follower);
 
-    axios.post(formulario_follower.action, datos)
-        .then(response => {
-            console.log("RESPUESTA:");
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.error("ERROR FATAL:", error);
-        });
-});
+//     axios.post(formulario_follower.action, datos)
+//         .then(response => {
+//             console.log("RESPUESTA:");
+//             console.log(response.data);
+//         })
+//         .catch(error => {
+//             console.error("ERROR FATAL:", error);
+//         });
+// });
 
 // funcion dejar de seguir usuario
 // Función seguir usuario

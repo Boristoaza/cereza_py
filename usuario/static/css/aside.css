@@ -1,28 +1,182 @@
-    .sidebar-web {
-      width: 240px;
-      position: fixed;
-      top: 60px;
-      left: 0;
-      bottom: 0;
-      padding: 20px 8px 20px 24px;
-      border-right: 1px solid rgba(255, 255, 255, 0.04);
-    }
-    .nav-link-web {
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 10px 12px;
-      border-radius: 4px;
-      text-decoration: none;
-      transition: background-color 0.2s;
-    }
-    .nav-link-web:hover {
-      background-color: rgba(255, 255, 255, 0.04);
-      color: #fff;
-    }
-    .nav-link-web.active {
-      color: #fe2c55;
-    }
+.sidebar-web {
+    width: 240px;
+
+    position: fixed;
+    top: 60px;
+    left: 0;
+    bottom: 0;
+
+    padding: 20px 16px;
+
+    background-color: black !important;
+    border: none;
+
+    box-sizing: border-box;
+    margin-top: -70px;
+  }
+
+
+  /* CONTENEDOR DEL NAV */
+
+  .sidebar-web nav {
+    width: 100%;
+  }
+  .marca{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    left: -10px;
+  }
+
+
+  /* =========================
+   BUSCADOR
+   ========================= */
+
+  .sidebar-search {
+    width: 100%;
+    margin: 0 0 8px 0;
+  }
+
+  .search-bar-container {
+    width: 100%;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+
+    box-sizing: border-box;
+
+    padding: 0 10px;
+
+    background-color: #181818;
+
+    border: 1px solid #303030;
+    border-radius: 9px;
+
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+
+  .search-bar-container:hover {
+    background-color: #1c1c1c;
+    border-color: #3a3a3a;
+  }
+
+
+  .search-bar-container:focus-within {
+    background-color: #1c1c1c;
+    border-color: #555;
+  }
+
+
+  /* INPUT */
+
+  .search-input {
+    width: 100%;
+    height: 100%;
+
+    padding: 0;
+
+    background: transparent;
+
+    border: none;
+    outline: none;
+
+    color: #f1f1f1;
+
+    font-size: 14px;
+  }
+
+
+  .search-input::placeholder {
+    color: #777;
+  }
+
+
+  /* BOTÓN */
+
+  .search-btn {
+    width: 28px;
+    height: 28px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    background: transparent;
+
+    border: none;
+
+    color: #888;
+
+    cursor: pointer;
+  }
+
+
+  .search-btn:hover {
+    color: #fff;
+  }
+
+
+  /* =========================
+   ENLACES
+   ========================= */
+
+  .nav-link-web {
+    width: 100%;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 0 12px;
+
+    box-sizing: border-box;
+
+    color: #fff;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    border-radius: 6px;
+
+    transition: background-color 0.2s ease;
+  }
+
+
+  .nav-link-web i {
+    width: 22px;
+
+    text-align: center;
+
+    font-size: 18px;
+  }
+
+
+  .nav-link-web:hover {
+    background-color: #181818;
+    color: #fff;
+  }
+  /* estos son los botenes cargar y editar  */
+  .sidebar-button {
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: left;
+}
+
+.sidebar-button:hover {
+    background-color: #181818;
+    color: #fff;
+}

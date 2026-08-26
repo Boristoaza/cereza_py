@@ -1,0 +1,192 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/post_grid.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+
+<div class="contenedor_grid">
+
+    {% for i in repost %}
+
+    <div class="contenedor_post">
+
+        <!-- CONTENIDO DEL POST ORIGINAL -->
+        {% for x in i.post_original.pack_set.all %}
+
+            {% if x.video %}
+                <video class="imagen_post video_feed" muted loop playsinline>
+                    <source src="{{ x.video.url }}" type="video/mp4">
+                </video>
+            {% endif %}
+
+            {% if x.imagen %}
+                <img src="{{ x.imagen.url }}" class="imagen_post">
+            {% endif %}
+
+        {% endfor %}
+
+
+        <div class="degradado"></div>
+
+
+        <div class="info">
+
+            <!-- USUARIO QUE HIZO EL REPOST -->
+            <h5>
+                {{ i.usuario.perfil.nombre_usuario }}
+            </h5>
+
+            <!-- DESCRIPCIÓN DEL REPOST -->
+            <p>
+                {{ i.descripcion }}
+            </p>
+
+        </div>
+
+
+        <div class="acciones">
+
+
+            <!-- AVATAR DEL USUARIO QUE HIZO EL REPOST -->
+            <div class="accion">
+
+                <img
+                    src="/media/{{ i.usuario.perfil.avatar }}"
+                    class="avatar"
+                >
+
+            </div>
+
+
+            <!-- LIKE -->
+            <div class="accion">
+
+                <form
+                    action="{% url 'reacciones:like' %}"
+                    method="post"
+                    class="form_like"
+                >
+
+                    {% csrf_token %}
+
+                    <input
+                        type="hidden"
+                        name="id_post_like"
+                        value="{{ i.id }}"
+                    >
+
+                    <button type="submit" class="btn-corazon">
+
+                        <i class="bi bi-heart"></i>
+
+                    </button>
+
+                </form>
+
+                <span>
+                    {{ i.reaccion_set.count }}
+                </span>
+
+            </div>
+
+
+            <!-- COMENTARIOS -->
+            <div class="accion">
+
+                <i
+                    class="bi bi-chat-fill"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal{{ i.id }}"
+                    data-post-id="{{ i.id }}"
+                >
+                </i>
+
+                <span>
+                    {{ i.comentario_set.count }}
+                </span>
+
+            </div>
+
+
+            <!-- COMPARTIR -->
+            <div class="accion">
+
+                <form
+                    action="{% url 'publicacion:compartir_post' %}"
+                    method="post"
+                >
+
+                    {% csrf_token %}
+
+                    <input
+                        type="hidden"
+                        name="id_post_compartir"
+                        value="{{ i.id }}"
+                    >
+
+                    <button
+                        type="submit"
+                        class="submit boton-compartir"
+                    >
+
+                        <i class="bi bi-send-fill"></i>
+
+                    </button>
+
+                </form>
+
+                <span>
+                    214
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+    {% endfor %}
+
+
+    {% include 'modals/post_detalle.html' %}
+
+</div>
+
+
+<style>
+
+.btn-corazon {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.btn-corazon:hover {
+    color: #ff2a5f;
+}
+
+.boton-compartir {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    box-shadow: none;
+    color: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+</style>
+
+
+<script src="{% static 'js/comentarios.js' %}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/axios@1.19.0/dist/axios.min.js"></script>

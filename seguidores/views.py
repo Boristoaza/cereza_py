@@ -6,55 +6,54 @@ from django.shortcuts import redirect
 from usuario.models import Perfil
 
 
-# Create your views here.
-# def seguir(request):
-#   if request.method == 'POST':
-#     usuerio = request.POST.get('usuario')
-#     verificar_usuario = User.objects.filter(username=usuerio).first()
 
-#     if verificar_usuario :
-#      seguir_usuario = Follower.objects.create(seguidor=request.user,seguido=verificar_usuario)
-#      seguidos = Follower.objects.all().values_list('seguidos')
-#     #  return redirect('usuario:perfil')
-
-#      print(f'seguidos {seguidos}')
-#     else:
-#       print("No existe el usuario")
-
-#     return HttpResponse(f'este es el id ')
-#   return HttpResponse('esto esel de seguir')
 
 
 def seguir(request):
     if request.method == 'POST':
+
         usuario_a_seguir = request.POST.get("usuario")
 
-        seguidido = User.objects.filter(username=usuario_a_seguir).get()
-        consultar_seguidor = Follower.objects.filter(seguido_id=seguidido.id).exists()
+        seguido = User.objects.filter(
+            username=usuario_a_seguir
+        ).get()
+
+        consultar_seguidor = Follower.objects.filter(
+            seguidor=request.user,
+            seguido=seguido
+        ).exists()
+
+        print(seguido, consultar_seguidor)
 
         if consultar_seguidor == True:
-            print("estas siguiendo a esta persona")
+
+            print("estás siguiendo a esta persona")
+
+            borrar_follow = Follower.objects.filter(
+                seguidor=request.user,
+                seguido=seguido
+            ).delete()
+
+            print(f"se eliminó {borrar_follow}")
+
+        else:
+
+            crear_follow = Follower.objects.create(
+                seguidor=request.user,
+                seguido=seguido
+            )
+
+            print(f"se creó el seguimiento {crear_follow}")
 
         datos = [{
             "usuario": usuario_a_seguir
         }]
 
         return JsonResponse(datos, safe=False)
+
     return JsonResponse({
         "error": "Método no permitido"
     }, status=405)
-
-
-def eliminar_seguido(resquest):
-  if resquest.method == 'POST':
-    id_usuerio = resquest.POST.get('usuario')
-
-    datos =[ {
-        "usuario":id_usuerio
-    }]
-
-  return JsonResponse(datos,safe=False)
-
 
 
 def ver_seguidos(request, usuario):

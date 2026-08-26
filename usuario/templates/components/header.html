@@ -36,7 +36,6 @@
     </section>
 
     <section class="counts-container mb-3">
-
         <div class="count-item" data-bs-toggle="modal" data-bs-target="#seguidosModal">
             <strong>{{ seguidos.count|default:"0" }}</strong>
             <a href="#" style="color: aliceblue; text-decoration: none;">Siguiendo</a>
@@ -72,7 +71,7 @@
                 </button>
             </form>
            {% else %}
-            <form id="form_eliminar_follow" action="{% url 'seguir:eliminar_seguido' %}" method="POST">
+            <form id="from_follower" action="{% url 'seguir:seguir' %}" method="POST">
                {% csrf_token %}
                <input type="hidden" name="usuario" value="{{perfil.usuario}}">
                <button type="submit" class="btn-siguiendo-dark">Siguiendo</button>
@@ -89,9 +88,13 @@
                 </button>
             </form>
         {% endif %}
-
     </div>
+      <section class="tabs">
+        {% include "components/tabs.html"  %}
+    </section>
+   <script src="{% static 'js/like.js' %}"></script>
    <script src="{% static 'js/follower.js' %}"></script>
+   <script src="{% static 'js/tabs.js' %}" ></script>
 
 </div>
 {% endblock %}

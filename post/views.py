@@ -22,7 +22,7 @@ def publicacion(request):
         for img in imagenes:
             Pack.objects.create(
                 post=post,
-                imagen=img
+                video=img
             )
 
         return redirect('usuario:perfil')
@@ -32,14 +32,14 @@ def publicacion(request):
 @login_required
 def compartir_publicacion(request):
     if request.method == 'POST':
-        id_post = request.POST.get('id_post')
-        descripcion = request.POST.get('comentario_compartir')
+        id_post = request.POST.get('id_post_compartir')
+        # descripcion = request.POST.get('comentario_compartir')
 
         verificar_post = Post.objects.get(id=id_post)
 
         Post.objects.create(
             usuario=request.user,
-            descripcion=descripcion,
+            # descripcion=descripcion,
             post_original=verificar_post
         )
 

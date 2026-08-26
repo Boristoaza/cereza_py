@@ -45,11 +45,19 @@ def comentario(request):
 
 # esto es una prueba nada mas
 def ver_comentarios(request ,id_post):
-    consutar_comentario = Comentario.objects.filter(post_id=id_post)
+    consutar_comentario = Comentario.objects.filter(post_id=id_post).select_related('usuario')
+    for i in consutar_comentario:
+        print(i.usuario.perfil.nombre_usuario)
+        print(i.usuario.perfil.avatar)
 
     lista_comentario = []
     for i in consutar_comentario:
-        lista_comentario.append(i.comentario)
+          lista_comentario.append({
+            "nombre_usuario": i.usuario.perfil.nombre_usuario,
+            "avatar": i.usuario.perfil.avatar.name,
+            "comentario": i.comentario,
+        })
+
     data = [{
         "id_del_post":id_post,
         "msg":"200",

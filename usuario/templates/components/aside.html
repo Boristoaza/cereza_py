@@ -1,24 +1,152 @@
-<aside class="sidebar-web d-none d-md-block" style="background-color: black; border: none;">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+
+<aside class="sidebar-web d-none d-md-block">
+
+  <a href="#" class="d-flex align-items-center text-decoration-none text-white fw-bold fs-4 marca">
+    <span class="me-2">🍒</span>CEREZA
+  </a>
+
   <nav class="d-flex flex-column gap-1">
-    <a href="{% url 'usuario:perfil' %}" class="nav-link-web" >
-      <i class="bi bi-house-door-fill"></i> Perfil
+
+    <!-- BUSCADOR -->
+    <form action="{% url 'buscador:buscar' %}" method="GET" class="sidebar-search">
+
+      <div class="search-bar-container">
+
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Buscar..."
+          name="busqueda"
+          id="busqueda"
+          required
+        >
+
+        <button type="submit" class="search-btn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
+      </div>
+
+    </form>
+
+
+    <!-- PERFIL -->
+    <a href="{% url 'usuario:perfil' %}" class="nav-link-web">
+      <i class="fa-solid fa-user"></i>
+      Perfil
     </a>
 
+
+    <!-- SIGUIENDO -->
     <a href="{% url 'feed:feed' %}" class="nav-link-web">
-      <i class="bi bi-people"></i>Siguiendo
-    </a>
-
-    <a href="{% url 'feed:explorar' %}" class="nav-link-web">
-      <i class="bi bi-compass"></i>Explorar
+      <i class="fa-solid fa-user-group"></i>
+      Siguiendo
     </a>
 
 
+    <!-- EXPLORAR -->
+    <form action="{% url 'feed:explorar' %}" method="post" class="explorar-form">
+
+      {% csrf_token %}
+
+      <input
+        type="hidden"
+        name="usuario"
+        value="{{ request.user.username }}"
+      >
+
+      <button type="submit" class="nav-link-web explorar-button">
+        <i class="fa-solid fa-compass"></i>
+        Explorar
+      </button>
+
+    </form>
+
+
+    <!-- NOTIFICACIONES -->
     <a href="" class="nav-link-web">
-      <i class="bi bi-bell-fill"></i> Notificaciones
+      <i class="fa-solid fa-bell"></i>
+      Notificaciones
     </a>
 
+
+    <!-- MENSAJES -->
     <a href="" class="nav-link-web">
-      <i class="bi bi-chat-dots-fill"></i> Mensajes
+      <i class="fa-solid fa-message"></i>
+      Mensajes
     </a>
+
+
+    <!-- CARGAR -->
+    <button
+      type="button"
+      class="nav-link-web sidebar-button"
+      data-bs-toggle="modal"
+      data-bs-target="#publicar"
+    >
+      <i class="fa-solid fa-plus"></i>
+      <span>Cargar</span>
+    </button>
+
+
+    <!-- EDITAR PERFIL -->
+    {% if request.user == perfil.usuario %}
+
+      <button
+        type="button"
+        class="nav-link-web sidebar-button"
+        data-bs-toggle="modal"
+        data-bs-target="#editar_model"
+      >
+        <i class="fa-solid fa-pen-to-square"></i>
+        <span>Editar Perfil</span>
+      </button>
+
+    {% endif %}
+
   </nav>
+
 </aside>
+
+
+<style>
+
+  /* El formulario de explorar no debe agregar espacio */
+  .explorar-form {
+    margin: 0;
+    padding: 0;
+  }
+
+
+  /* El botón se comporta visualmente como un nav-link */
+  .explorar-button {
+    border: none;
+    background: transparent;
+
+    width: 100%;
+
+    font: inherit;
+    color: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    /* NO quitamos el padding de nav-link-web */
+    margin: 0;
+
+    /* Evita el borde al hacer focus */
+    outline: none;
+  }
+
+
+  /* Evita el estilo azul/blanco del navegador */
+  .explorar-button:focus,
+  .explorar-button:active {
+    border: none;
+    outline: none;
+    background: transparent;
+  }
+
+</style>

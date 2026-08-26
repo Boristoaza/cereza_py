@@ -6,12 +6,27 @@
 {% endblock %}
 
 {% block content %}
-
     {% include "components/header.html" %}
+   <div class="contenedor_post_perfil"
+     style="margin-left: 134px; margin-top: -150px; background-color: black;">
 
-    <div class="contenedor_post_perfil" style="margin-left: 134px; margin-top: -100px; background-color: black;">
-      {% include "components/post_grid.html" %}
-      {% include "modals/seguidores_modal.html" %}
-      {% include "modals/seguidos_modal.html" %}
-    </div>
+    {% if tab == "2" %}
+
+        {% include "components/respost.html" %}
+
+    {% elif tab == "3" %}
+
+        {% include "components/guardados.html" %}
+
+    {% else %}
+
+        {% include "components/post_grid.html" %}
+
+    {% endif %}
+
+    {% include "modals/seguidores_modal.html" %}
+    {% include "modals/seguidos_modal.html" %}
+
+</div>
+
 {% endblock %}

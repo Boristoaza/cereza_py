@@ -7,7 +7,6 @@ document.addEventListener("shown.bs.modal", function (event) {
 
     const idPost = modal.id.replace("exampleModal", "");
 
-    // Mostrar spinner mientras carga
     contenedorComentario.innerHTML = `
         <div class="spinner_comentarios">
             <div class="spinner-border" role="status">
@@ -19,19 +18,39 @@ document.addEventListener("shown.bs.modal", function (event) {
     axios.get(`/comentarios/ver_comentarios/${idPost}/`)
         .then(response => {
 
-            console.log(idPost);
-
-            console.log("Comentarios:", response.data);
+            console.log("Comentarios:ññññ", response.data);
 
             const datos = response.data[0];
 
             contenedorComentario.innerHTML = "";
 
             datos.comentarios.forEach(comentario => {
-
                 contenedorComentario.innerHTML += `
                     <div class="comentario">
-                        <p>${comentario}</p>
+
+                        <img
+                            class="comentario_avatar"
+                            src="/media/${comentario.avatar}"
+                        >
+
+                        <div class="comentario_contenido">
+
+                            <div class="comentario_texto">
+                                <strong>
+                                    ${comentario.nombre_usuario}
+                                </strong>
+
+                                <span>
+                                    ${comentario.comentario}
+                                </span>
+                            </div>
+
+                            <div class="comentario_info">
+                                Me gusta
+                            </div>
+
+                        </div>
+
                     </div>
                 `;
 
@@ -49,6 +68,7 @@ document.addEventListener("shown.bs.modal", function (event) {
             `;
 
         });
+
 });
 
 document.addEventListener("submit", function (event) {

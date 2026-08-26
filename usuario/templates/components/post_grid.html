@@ -1,8 +1,7 @@
 {% load static %}
 
 <link rel="stylesheet" href="{% static 'css/post_grid.css' %}">
-<link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
 
 <div class="contenedor_grid">
@@ -13,55 +12,39 @@
 
         {% if i.post_original %}
 
-            {% for pack in i.post_original.pack_set.all %}
+        {% for pack in i.post_original.pack_set.all %}
 
-                {% if pack.imagen %}
-                    <img
-                        src="{{ pack.imagen.url }}"
-                        class="imagen_post">
-                {% endif %}
+        {% if pack.imagen %}
+        <img src="{{ pack.imagen.url }}" class="imagen_post">
+        {% endif %}
 
-                {% if pack.video %}
-                    <video
-                        class="imagen_post video_feed"
-                        muted
-                        loop
-                        playsinline>
+        {% if pack.video %}
+        <video class="imagen_post video_feed" muted loop playsinline>
 
-                        <source
-                            src="{{ pack.video.url }}"
-                            type="video/mp4">
+            <source src="{{ pack.video.url }}" type="video/mp4">
 
-                    </video>
-                {% endif %}
+        </video>
+        {% endif %}
 
-            {% endfor %}
+        {% endfor %}
 
         {% else %}
 
-            {% for pack in i.pack_set.all %}
+        {% for pack in i.pack_set.all %}
 
-                {% if pack.imagen %}
-                    <img
-                        src="{{ pack.imagen.url }}"
-                        class="imagen_post">
-                {% endif %}
+        {% if pack.imagen %}
+        <img src="{{ pack.imagen.url }}" class="imagen_post">
+        {% endif %}
 
-                {% if pack.video %}
-                    <video
-                        class="imagen_post video_feed"
-                        muted
-                        loop
-                        playsinline>
+        {% if pack.video %}
+        <video class="imagen_post video_feed" muted loop playsinline>
 
-                        <source
-                            src="{{ pack.video.url }}"
-                            type="video/mp4">
+            <source src="{{ pack.video.url }}" type="video/mp4">
 
-                    </video>
-                {% endif %}
+        </video>
+        {% endif %}
 
-            {% endfor %}
+        {% endfor %}
 
         {% endif %}
 
@@ -86,43 +69,84 @@
 
             <div class="accion">
 
-                <img
-                    src="/media/{{ i.usuario.perfil.avatar }}"
-                    class="avatar">
+                <img src="/media/{{ i.usuario.perfil.avatar }}" class="avatar">
 
             </div>
 
 
             <div class="accion">
+                <form action="{% url 'reacciones:like' %}" method="post" class="form_like">
 
-                <i class="bi bi-heart-fill"></i>
+                    {% csrf_token %}
 
-                <span>12.4K</span>
+                    <input type="hidden" name="id_post_like" value="{{i.id}}">
 
+                    <button type="submit" class="btn-corazon">
+                        <i class="bi bi-heart"></i>
+                    </button>
+
+                </form>
+
+                <span>{{ i.reaccion_set.count }}</span>
             </div>
+
+            <style>
+                .btn-corazon {
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    margin: 0;
+                    color: white;
+                    font-size: 22px;
+                    cursor: pointer;
+                }
+
+                .btn-corazon:hover {
+                    color: #ff2a5f;
+                }
+            </style>
 
 
             <div class="accion">
 
-                <i
-                    class="bi bi-chat-fill"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal{{ i.id }}"
+                <i class="bi bi-chat-fill" data-bs-toggle="modal" data-bs-target="#exampleModal{{ i.id }}"
                     data-post-id="{{ i.id }}">
                 </i>
 
-                <span>532</span>
+                <span>{{i.comentario_set.count}}</span>
 
             </div>
 
 
             <div class="accion">
 
-                <i class="bi bi-send-fill"></i>
+                <form action="{% url 'publicacion:compartir_post' %}" method="post">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="id_post_compartir" value="{{ i.id }}">
+
+                    <button type="submit" class="submit boton-compartir">
+                        <i class="bi bi-send-fill"></i>
+                    </button>
+                </form>
 
                 <span>214</span>
 
             </div>
+            <style>
+                .boton-compartir {
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    margin: 0;
+                    outline: none;
+                    box-shadow: none;
+                    color: inherit;
+                    appearance: none;
+                    -webkit-appearance: none;
+                    cursor: pointer;
+                }
+            </style>
 
         </div>
 

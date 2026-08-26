@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate , login
 from django.contrib.auth import logout
 from post.models import Post,Pack
 from .models import Perfil
-from django.http import HttpResponse
+from django.http import HttpResponse , JsonResponse
 from django.shortcuts import get_object_or_404, render
 from reacciones.models import Reaccion
 from seguidores.models import Follower
@@ -102,6 +102,34 @@ def perfil_view(request):
     else:
         formulario = Avatar_from(instance=perfil)
 
+    repost = ""
+    tab = "1"
+
+    if request.method == "POST":
+        usuario = request.POST.get("nombre_usuario")
+        tab_nombre = request.POST.get("tab_op")
+
+        tab = tab_nombre
+
+        if usuario and tab_nombre == "2":
+            # Repost
+            usuario_filtro = User.objects.get(username=usuario)
+
+            repost = Post.objects.filter(
+                usuario=usuario_filtro,
+                post_original__isnull=False
+            ).select_related(
+                "usuario",
+                "post_original",
+                "post_original__usuario"
+            ).prefetch_related(
+                "post_original__pack_set"
+            )
+
+        elif usuario and tab_nombre == "3":
+            # Guardados
+            print("-> tab guardados")
+
     # descripcion
     if request.method == 'POST':
         biografia = Biogradia_form(request.POST, instance=perfil)
@@ -109,8 +137,6 @@ def perfil_view(request):
             biografia.save()
     else:
         biografia = Biogradia_form(instance=perfil)
-
-
 
 
     seguidos = (
@@ -128,29 +154,24 @@ def perfil_view(request):
     cantidad_seguidores = seguidores.count()
     cantidad_seguidos = seguidos.count()
 
-
-
-
     publicaciones = (
-    Post.objects
-    .filter(usuario=request.user)
-    .select_related(
-        'usuario',
-        'usuario__perfil',
-        'post_original',
-        'post_original__usuario',
-        'post_original__usuario__perfil'
+        Post.objects
+        .filter(
+            usuario=request.user,
+            post_original__isnull=True
+        )
+        .select_related(
+            'usuario',
+            'usuario__perfil'
+        )
+        .prefetch_related(
+            'pack_set',
+            'comentario_set',
+            'reaccion_set'
+        )
+        .order_by('-id')
     )
-    .prefetch_related(
-        'pack_set',
-        'comentario_set',
-        'reaccion_set',
-        'post_original__pack_set',
-        'post_original__comentario_set',
-        'post_original__reaccion_set'
-    )
-    .order_by('-id')
-)
+
     contexto = {
         'perfil': perfil,
         'formulario':formulario,
@@ -160,6 +181,8 @@ def perfil_view(request):
         'seguidores': seguidores,
         'cantidad_seguidores': cantidad_seguidores,
         'cantidas_seguidos': cantidad_seguidos,
+        'repost':repost,
+        'tab':tab
     }
 
     return render(request, 'perfil.html', contexto)
@@ -192,20 +215,20 @@ def ver_perfil(request, usuario):
         seguido_id=perfil.usuario.id
     ).exists()
 
-    print(f"Es verdad que sigue: {verificar_seguidor}")
-
     # cuenta los seguidores
     cantidad_seguidores = seguidores.count()
     cantidad_seguidos = seguidos.count()
 
+
     # treae los post del usuario que se
+
     posts = (
         Post.objects.filter(usuario=perfil.usuario)
         .select_related('usuario', 'usuario__perfil')
         .prefetch_related(
             'comentario_set',
             'reaccion_set',
-            'pack_set'
+            'pack_set',
         )
     ).order_by('-id')
 
@@ -221,3 +244,41 @@ def ver_perfil(request, usuario):
     }
 
     return render(request, 'perfil.html', contexto)
+
+
+@login_required
+def tabs(request, id):
+    print(id)
+
+    # if id == 2:
+
+    #     usuario = request.user
+
+    #     repost = (
+    #         Post.objects
+    #         .filter(
+    #             usuario=usuario,
+    #             post_original__isnull=False
+    #         )
+    #         .select_related(
+    #             'usuario',
+    #             'usuario__perfil',
+    #             'post_original',
+    #             'post_original__usuario',
+    #             'post_original__usuario__perfil'
+    #         )
+    #         .prefetch_related(
+    #             'post_original__pack_set'
+    #         )
+    #         .order_by('-id')
+    #     )
+
+    #     return render(
+    #         request,
+    #         'post_grid.html',
+    #         {
+    #             'repost': repost
+    #         }
+    #     )
+
+    return redirect('usuario:perfil')

@@ -4,30 +4,33 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
 
-<div class="contenedor_grid" >
+<div class="contenedor_grid">
 
-    {% for x in "x"|rjust:"40" %}
+    {% for publicacion in publicaciones %}
 
-    <div class="contenedor_post">
+        {% for pack in publicacion.pack_set.all %}
 
-        <img src="https://picsum.photos/500/800?random={{ forloop.counter }}"
-             class="imagen_post">
+            {% if pack.video %}
 
-        <div class="likes">
-            <i class="bi bi-heart"></i>
-            <span>{{ forloop.counter }}K</span>
-        </div>
+                <div class="contenedor_post">
 
-        <div class="usuario">
+                    <video
+                        class="imagen_post"
+                        src="{{ pack.video.url }}"
+                        muted
+                        loop
+                        playsinline>
+                    </video>
 
-            <img src="https://picsum.photos/80?random={{ forloop.counter|add:100 }}"
-                 class="avatar">
+                    <div class="descripcion">
+                        {{ publicacion.usuario }}
+                    </div>
 
-            <span>@usuario{{ forloop.counter }}</span>
+                </div>
 
-        </div>
+            {% endif %}
 
-    </div>
+        {% endfor %}
 
     {% endfor %}
 

@@ -8,27 +8,58 @@ from usuario.models import Perfil
 
 def feed_view(request):
 
-  ids_seguidos = Follower.objects.filter(
-      seguidor=request.user
-  ).values_list('seguido_id', flat=True)
-
-  seguidos = User.objects.filter(id__in=ids_seguidos).select_related('perfil')
-  posts = (
-        Post.objects.filter(usuario_id__in=ids_seguidos)
-        .select_related('usuario', 'usuario__perfil')
-        .prefetch_related('pack_set')
+    ids_seguidos = Follower.objects.filter(
+        seguidor=request.user
+    ).values_list(
+        'seguido_id',
+        flat=True
     )
 
-  post = Post.objects.filter(usuario=request.user).select_related('usuario__perfil').prefetch_related('pack_set').order_by('-id')
+    usuarios_feed = list(ids_seguidos) + [request.user.id]
 
-  return render(
-      request,
-      'feed.html',
-      {
-          'seguidos': seguidos,
-          'post':post
-      }
-  )
+    posts = (
+        Post.objects
+        .filter(usuario_id__in=usuarios_feed)
+        .select_related(
+            'usuario',
+            'usuario__perfil'
+        )
+        .prefetch_related(
+            'pack_set'
+        )
+        .order_by('-fecha','-id')[:10]
+    )
+
+    return render(
+        request,
+        'feed.html',
+        {
+            'post': posts
+        }
+    )
 
 def explorer_view(request):
-  return render(request,'explorar.html')
+
+    if request.method == "POST":
+
+        usuario = request.POST.get("usuario")
+
+
+        publicaciones = (
+            Post.objects
+            .all()
+            .prefetch_related("pack_set")
+            .order_by("-id")
+        )
+
+        print(f"-> explorer {usuario}")
+
+        return render(
+            request,
+            "explorar.html",
+            {
+                "publicaciones": publicaciones
+            }
+        )
+
+    return render(request, "explorar.html")

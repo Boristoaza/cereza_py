@@ -1,0 +1,124 @@
+{% load static %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+
+<ul class="nav nav-tabs">
+
+    <!-- VIDEOS -->
+    <li class="nav-item">
+
+        <form action="{% url 'usuario:perfil' %}" method="post" class="form_tab">
+
+            <input type="hidden" name="tab_op" value="1">
+            <input type="hidden" name="nombre_usuario" value="{{perfil}}">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="nav-link {% if tab == '1' %}active{% endif %}">
+
+                <i class="fa-solid fa-grip-vertical"></i>
+                Videos
+
+            </button>
+
+        </form>
+
+    </li>
+
+
+    <!-- REPOST -->
+    <li class="nav-item">
+
+        <form action="{% url 'usuario:perfil' %}" method="post" class="form_tab">
+
+            <input type="hidden" name="tab_op" value="2">
+            <input type="hidden" name="nombre_usuario" value="{{perfil}}">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="nav-link {% if tab == '2' %}active{% endif %}">
+
+                <i class="fa-solid fa-rotate"></i>
+                RePost
+
+            </button>
+
+        </form>
+
+    </li>
+
+
+    <!-- GUARDADOS -->
+    <li class="nav-item">
+
+        <form action="{% url 'usuario:perfil' %}" method="post" class="form_tab">
+
+            <input type="hidden" name="tab_op" value="3">
+            <input type="hidden" name="nombre_usuario" value="{{perfil}}">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="nav-link {% if tab == '3' %}active{% endif %}">
+
+                <i class="fa-regular fa-bookmark"></i>
+                Guardados
+
+            </button>
+
+        </form>
+
+    </li>
+
+</ul>
+
+
+<style>
+
+    .nav-tabs {
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    .nav-tabs .nav-item {
+        margin: 0;
+    }
+
+    /* TAB NORMAL */
+    .nav-tabs .nav-link {
+        border: none;
+        color: #ffffff !important;
+        background: transparent;
+        padding: 12px 20px;
+    }
+
+    /* ICONO NORMAL */
+    .nav-tabs .nav-link i {
+        color: #ffffff;
+    }
+
+    /* HOVER */
+    .nav-tabs .nav-link:hover {
+        color: #fe2c55 !important;
+        border: none;
+    }
+
+    .nav-tabs .nav-link:hover i {
+        color: #fe2c55;
+    }
+
+    /* TAB ACTIVA */
+    .nav-tabs .nav-link.active {
+        color: #fe2c55 !important;
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid #fe2c55;
+    }
+
+    /* ICONO ACTIVO */
+    .nav-tabs .nav-link.active i {
+        color: #fe2c55;
+    }
+
+</style>
