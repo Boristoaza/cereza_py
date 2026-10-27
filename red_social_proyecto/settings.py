@@ -79,7 +79,21 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'red_social_proyecto.wsgi.application'
-ASGI_APPLICATION = "red_social_proyecto.asgi.application"
+ASGI_APPLICATION = 'red_social_proyecto.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                {
+                    "address": "redis://127.0.0.1:6379",
+                    "socket_timeout": None,
+                }
+            ],
+        },
+    },
+}
 
 
 # Database

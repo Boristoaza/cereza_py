@@ -1,0 +1,231 @@
+{% extends "main.html" %}
+
+{% block title %}
+    🍒 Cereza - Mensajes
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* Contenedor del chat: se adapta al espacio disponible */
+    .mensajes-container {
+        width: 90%;
+        height: 100%;
+        min-height: calc(100vh - 64px);
+        background-color: #000;
+        color: #f1f1f1;
+        padding: 20px;
+        box-sizing: border-box;
+        position: relative;
+        left: 120px;
+    }
+
+    .mensajes-panel {
+        display: flex;
+        width: 100%;
+        min-height: calc(100vh - 104px);
+        background-color: #000;
+        border: 1px solid #262626;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    /* Lista de conversaciones */
+    .mensajes-lista {
+        width: 300px;
+        min-width: 300px;
+        background-color: #121212;
+        border-right: 1px solid #262626;
+    }
+
+    .mensajes-encabezado {
+        padding: 22px 18px;
+        border-bottom: 1px solid #262626;
+    }
+
+    .mensajes-buscador {
+        padding: 15px;
+    }
+
+    .mensajes-buscador input {
+        width: 100%;
+        padding: 10px 14px;
+        background-color: #262626;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        outline: none;
+    }
+
+    .mensajes-buscador input::placeholder {
+        color: #a8a8a8;
+    }
+
+    .mensajes-usuario {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        text-decoration: none;
+        color: white;
+        transition: background-color 0.2s;
+    }
+
+    .mensajes-usuario:hover {
+        background-color: #1c1c1c;
+        color: white;
+    }
+
+    .mensajes-usuario img {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .mensajes-usuario h6 {
+        margin: 0 0 5px;
+        font-size: 14px;
+    }
+
+    .mensajes-usuario p {
+        margin: 0;
+        font-size: 13px;
+        color: #a8a8a8;
+    }
+
+    /* Área principal */
+    .mensajes-contenido {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 25px;
+        background-color: #000;
+    }
+
+    .mensajes-icono {
+        width: 85px;
+        height: 85px;
+        border: 2px solid #f1f1f1;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .mensajes-icono i {
+        font-size: 38px;
+    }
+
+    .mensajes-contenido h4 {
+        font-weight: 400;
+        margin-bottom: 10px;
+    }
+
+    .mensajes-contenido p {
+        color: #a8a8a8;
+        font-size: 14px;
+    }
+
+    .mensajes-boton {
+        background-color: #ff2a5f;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 18px;
+    }
+
+    .mensajes-boton:hover {
+        background-color: #e62253;
+        color: white;
+    }
+
+    /* Adaptación para celulares */
+    @media (max-width: 768px) {
+        .mensajes-container {
+            padding: 10px;
+        }
+
+        .mensajes-panel {
+            min-height: calc(100vh - 84px);
+        }
+
+        .mensajes-lista {
+            width: 100%;
+            min-width: 0;
+        }
+
+        .mensajes-contenido {
+            display: none;
+        }
+    }
+</style>
+
+<div class="mensajes-container">
+
+    <div class="mensajes-panel">
+
+        <!-- Conversaciones -->
+        <div class="mensajes-lista">
+
+            <div class="mensajes-encabezado">
+                <h5 class="mb-1">{{ perfil.nombre_usuario }}</h5>
+                <small class="text-secondary">Mensajes</small>
+            </div>
+
+            <div class="mensajes-buscador">
+                <input type="text"
+                       placeholder="Buscar conversaciones...">
+            </div>
+
+            <a href="#" class="mensajes-usuario">
+                <img src="https://placehold.co/100x100"
+                     alt="Foto de perfil">
+
+                <div>
+                    <h6>Usuario de ejemplo</h6>
+                    <p>Hola, ¿cómo estás?</p>
+                </div>
+            </a>
+
+            <a href="#" class="mensajes-usuario">
+                <img src="https://placehold.co/100x100"
+                     alt="Foto de perfil">
+
+                <div>
+                    <h6>María</h6>
+                    <p>¿Nos vemos mañana?</p>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- Pantalla inicial -->
+        <div class="mensajes-contenido">
+
+            <div class="mensajes-icono">
+                <i class="bi bi-send"></i>
+            </div>
+
+            <h4>Tus mensajes</h4>
+
+            <p>
+                Envía fotos y mensajes privados a tus amigos.
+            </p>
+
+            <button type="button" class="btn mensajes-boton">
+                Enviar mensaje
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
