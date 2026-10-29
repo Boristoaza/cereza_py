@@ -1,15 +1,31 @@
-from django.shortcuts import render
+from django.shortcuts import render , get_object_or_404
 
 from seguidores.models import Follower
-
+from django.contrib.auth.models import User
 def index(request):
-    amigos = Follower.objects.all()
-    print(amigos)
+    amigos = Follower.objects.filter(seguidor=request.user)
     for i in amigos:
-        print(i.seguido)
+        print(i.id)
+
     contexto = {'seguidos':amigos}
-    print(contexto)
     return render(request, "chat/index.html",contexto)
 
+
+
+
 def room(request, room_name):
-    return render(request, "chat/room.html", {"room_name": room_name})
+
+    amigo = get_object_or_404(
+        Follower,
+        seguidor=request.user,
+        seguido__username=room_name
+    )
+
+    usuario1 = request.user.id
+    usuario2 = amigo.seguido.id
+
+    nombre_sala = '_'.join(map(str, sorted([usuario1, usuario2])))
+
+    return render(request, "chat/room.html", {
+        "room_name": nombre_sala
+    })
