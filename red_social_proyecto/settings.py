@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'reacciones',
     'seguidores',
     'buscador',
+    'chats',
 ]
 
 MIDDLEWARE = [

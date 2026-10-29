@@ -48,9 +48,10 @@ def login_view(request):
   if request.user.is_authenticated:
         return redirect('usuario:perfil')
   if request.method == 'POST':
-    nombre = request.POST.get('nombre')
+    correo = request.POST.get('nombre')
     password = request.POST.get('password')
-    usuario = authenticate(username=nombre,password=password)
+    username = User.objects.filter(email=correo).values_list('username', flat=True).first() 
+    usuario = authenticate(username=username,password=password)
     if usuario is not None:
        login(request,usuario)
        return redirect('usuario:perfil')
