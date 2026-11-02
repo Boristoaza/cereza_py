@@ -1,0 +1,602 @@
+
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #121212;
+        font-family: Arial, sans-serif;
+        color: white;
+    }
+
+    .chat-container {
+        width: 1100px;
+        max-width: calc(100% - 30px);
+        position: relative;
+        left: 76px;
+        display: flex;
+        height: 90vh;
+        margin: 30px auto;
+        background: #121212;
+        border: 1px solid #292929;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    /* LISTA DE AMIGOS */
+
+    .lista-amigos {
+        width: 350px;
+        min-width: 280px;
+        background: #181818;
+        border-right: 1px solid #292929;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .encabezado {
+        padding: 22px;
+        border-bottom: 1px solid #292929;
+        font-size: 20px;
+        font-weight: bold;
+        color: #ff2a5f;
+    }
+
+    .amigos {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .amigo {
+        width: 100%;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border: none;
+        background: transparent;
+        color: white;
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .amigo:hover,
+    .amigo.activo {
+        background: #292929;
+    }
+
+    .amigo.activo {
+        border-left: 3px solid #ff2a5f;
+    }
+
+    .avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: #ff2a5f;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+        flex-shrink: 0;
+    }
+
+    .nombre {
+        font-weight: 600;
+        color: #f5f5f5;
+    }
+
+    /* CONVERSACIÓN */
+
+    .conversacion {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        background: #121212;
+    }
+
+    .chat-vacio {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: #999;
+    }
+
+    .chat-vacio h3 {
+        color: #ff2a5f;
+    }
+
+    .chat-activo {
+        flex: 1;
+        min-height: 0;
+        display: none;
+        flex-direction: column;
+    }
+
+    .chat-encabezado {
+        padding: 18px;
+        border-bottom: 1px solid #292929;
+        font-weight: bold;
+        color: white;
+        background: #181818;
+    }
+
+    .estado {
+        font-size: 12px;
+        color: #25f4ee;
+        font-weight: normal;
+        margin-top: 4px;
+    }
+
+    .chat-mensajes {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* MENSAJES */
+
+    .mensaje {
+        padding: 11px 16px;
+        border-radius: 20px;
+        max-width: 70%;
+        width: fit-content;
+        margin-bottom: 10px;
+        overflow-wrap: anywhere;
+    }
+
+    .mensaje-recibido {
+        background: #292929;
+        color: white;
+        align-self: flex-start;
+        border-bottom-left-radius: 5px;
+    }
+
+    .mensaje-enviado {
+        background: #ff2a5f;
+        color: white;
+        align-self: flex-end;
+        border-bottom-right-radius: 5px;
+    }
+
+    /* ESCRIBIR */
+
+    .chat-escribir {
+        display: flex;
+        padding: 15px;
+        border-top: 1px solid #292929;
+        gap: 10px;
+        background: #181818;
+    }
+
+    .chat-escribir input {
+        border-radius: 25px;
+        padding: 12px 18px;
+        background: #292929;
+        border: 1px solid #444;
+        color: white;
+    }
+
+    .chat-escribir input:focus {
+        background: #292929;
+        color: white;
+        border-color: #ff2a5f;
+        box-shadow: 0 0 0 2px rgba(255, 42, 95, 0.15);
+    }
+
+    .chat-escribir input::placeholder {
+        color: #999;
+    }
+
+    .chat-escribir button {
+        border-radius: 25px;
+        background: #ff2a5f;
+        border-color: #ff2a5f;
+        color: white;
+    }
+
+    .chat-escribir button:hover {
+        background: #e51e50;
+        border-color: #e51e50;
+    }
+
+    /* SCROLL */
+
+    .amigos::-webkit-scrollbar,
+    .chat-mensajes::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .amigos::-webkit-scrollbar-thumb,
+    .chat-mensajes::-webkit-scrollbar-thumb {
+        background: #444;
+        border-radius: 10px;
+    }
+
+    @media(max-width: 650px) {
+
+        .chat-container {
+            width: 100%;
+            max-width: 100%;
+            left: 0;
+            height: 100vh;
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .lista-amigos {
+            width: 110px;
+            min-width: 110px;
+        }
+
+        .encabezado {
+            padding: 15px 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .amigo {
+            flex-direction: column;
+            padding: 12px 5px;
+            text-align: center;
+        }
+
+        .nombre {
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .mensaje {
+            max-width: 85%;
+        }
+    }
+</style>
+
+
+<div class="chat-container">
+
+    <!-- LISTA DE AMIGOS -->
+
+    <section class="lista-amigos">
+
+        <div class="encabezado">
+            Mensajes
+        </div>
+
+        <div class="amigos">
+
+            {% for amigo in seguidos %}
+
+                <button
+                    type="button"
+                    class="amigo {% if request.GET.sala == amigo.nombre_sala %}activo{% endif %}"
+                    data-usuario="{{ amigo.usuario }}"
+                    data-sala="{{ amigo.nombre_sala }}"
+                >
+
+                    <div class="avatar">
+                        {{ amigo.usuario|first|upper }}
+                    </div>
+
+                    <div class="nombre">
+                        {{ amigo.usuario }}
+                    </div>
+
+                </button>
+
+            {% empty %}
+
+                <p class="text-center text-muted mt-4">
+                    No tienes amigos todavía.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- PANEL DE CONVERSACIÓN -->
+
+    <section class="conversacion">
+
+        <div id="chat-vacio" class="chat-vacio"
+             {% if request.GET.sala %}style="display:none"{% endif %}>
+
+            <div>
+                <h3>Tus mensajes</h3>
+                <p>Selecciona una persona para conversar.</p>
+            </div>
+
+        </div>
+
+
+        <div id="chat-activo" class="chat-activo"
+             {% if request.GET.sala %}style="display:flex"{% endif %}>
+
+            <div class="chat-encabezado">
+
+                <div id="nombre-amigo"></div>
+
+                <div class="estado" id="estado-chat">
+                    Desconectado
+                </div>
+
+            </div>
+
+
+            <!-- HISTORIAL DE MENSAJES -->
+
+            <div id="chat-log" class="chat-mensajes">
+
+                {% for mensaje in mensajes %}
+
+                    <div class="mensaje {% if mensaje.emisor_id == request.user.id %}mensaje-enviado{% else %}mensaje-recibido{% endif %}">
+                        {{ mensaje.contenido }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- ESCRIBIR -->
+
+            <div class="chat-escribir">
+
+                <input
+                    type="text"
+                    id="chat-message-input"
+                    class="form-control"
+                    placeholder="Escribe un mensaje..."
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    id="chat-message-submit"
+                    class="btn btn-primary"
+                >
+                    Enviar
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    let chatSocket = null;
+
+    let mensajesEnviados = [];
+
+    const botones = document.querySelectorAll('.amigo');
+
+    const chatVacio = document.getElementById('chat-vacio');
+    const chatActivo = document.getElementById('chat-activo');
+    const chatLog = document.getElementById('chat-log');
+    const inputMensaje = document.getElementById('chat-message-input');
+    const botonEnviar = document.getElementById('chat-message-submit');
+    const nombreAmigo = document.getElementById('nombre-amigo');
+    const estadoChat = document.getElementById('estado-chat');
+
+
+    // MOSTRAR MENSAJE
+
+    function mostrarMensaje(texto, tipo) {
+
+        const mensaje = document.createElement('div');
+
+        mensaje.classList.add('mensaje', tipo);
+
+        mensaje.textContent = texto;
+
+        chatLog.appendChild(mensaje);
+
+        chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+
+    // CONECTAR CON EL CHAT
+
+    function conectarChat(boton) {
+
+        const usuario = boton.dataset.usuario.trim();
+        const sala = boton.dataset.sala.trim();
+
+        botones.forEach(b => b.classList.remove('activo'));
+
+        boton.classList.add('activo');
+
+        chatVacio.style.display = 'none';
+        chatActivo.style.display = 'flex';
+
+        nombreAmigo.textContent = usuario;
+
+        chatLog.scrollTop = chatLog.scrollHeight;
+
+        if (chatSocket) {
+            chatSocket.close();
+            chatSocket = null;
+        }
+
+        mensajesEnviados = [];
+
+        const protocolo = window.location.protocol === 'https:'
+            ? 'wss://'
+            : 'ws://';
+
+        chatSocket = new WebSocket(
+            protocolo +
+            window.location.host +
+            '/ws/chat/' +
+            sala +
+            '/'
+        );
+
+        estadoChat.textContent = 'Conectando...';
+
+
+        // CONEXIÓN ESTABLECIDA
+
+        chatSocket.onopen = function() {
+
+            estadoChat.textContent = 'Conectado';
+
+            inputMensaje.focus();
+
+            console.log('Conectado a la sala:', sala);
+        };
+
+
+        // RECIBIR MENSAJES
+
+        chatSocket.onmessage = function(e) {
+
+            const data = JSON.parse(e.data);
+
+            const indice = mensajesEnviados.indexOf(data.message);
+
+            if (indice !== -1) {
+
+                mensajesEnviados.splice(indice, 1);
+
+            } else {
+
+                mostrarMensaje(data.message, 'mensaje-recibido');
+
+            }
+        };
+
+
+        // ERROR
+
+        chatSocket.onerror = function(error) {
+
+            console.error('Error WebSocket:', error);
+
+            estadoChat.textContent = 'Error de conexión';
+        };
+
+
+        // DESCONECTAR
+
+        chatSocket.onclose = function() {
+
+            estadoChat.textContent = 'Desconectado';
+        };
+
+    }
+
+
+    // SELECCIONAR AMIGO
+
+    botones.forEach(boton => {
+
+        boton.addEventListener('click', function() {
+
+            const sala = this.dataset.sala;
+
+            window.location.href = '?sala=' + encodeURIComponent(sala);
+
+        });
+
+    });
+
+
+    // ABRIR CONVERSACIÓN SELECCIONADA AL CARGAR
+
+    const parametros = new URLSearchParams(window.location.search);
+
+    const salaSeleccionada = parametros.get('sala');
+
+    if (salaSeleccionada) {
+
+        const botonSeleccionado = Array.from(botones).find(
+            boton => boton.dataset.sala === salaSeleccionada
+        );
+
+        if (botonSeleccionado) {
+
+            conectarChat(botonSeleccionado);
+
+        }
+
+    }
+
+
+    // BAJAR AL ÚLTIMO MENSAJE
+
+    chatLog.scrollTop = chatLog.scrollHeight;
+
+
+    // ENVIAR MENSAJES
+
+    function enviarMensaje() {
+
+        const mensaje = inputMensaje.value.trim();
+
+        if (!mensaje) {
+            return;
+        }
+
+        if (!chatSocket || chatSocket.readyState !== WebSocket.OPEN) {
+
+            estadoChat.textContent = 'Esperando conexión...';
+
+            return;
+        }
+
+        chatSocket.send(JSON.stringify({
+            'message': mensaje
+        }));
+
+        mensajesEnviados.push(mensaje);
+
+        mostrarMensaje(mensaje, 'mensaje-enviado');
+
+        inputMensaje.value = '';
+
+        inputMensaje.focus();
+
+    }
+
+
+    // BOTÓN ENVIAR
+
+    botonEnviar.addEventListener('click', enviarMensaje);
+
+
+    // ENTER PARA ENVIAR
+
+    inputMensaje.addEventListener('keyup', function(e) {
+
+        if (e.key === 'Enter') {
+            enviarMensaje();
+        }
+
+    });
+
+</script>
+
+{% endblock %}
