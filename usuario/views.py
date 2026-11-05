@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate , login
 from django.contrib.auth import logout
-from post.models import Post,Pack
+from post.models import Post,Pack , Guardados
 from .models import Perfil
 from django.http import HttpResponse , JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -106,6 +106,7 @@ def perfil_view(request):
     else:
         formulario = Avatar_from(instance=perfil)
 
+    guardados=""
     repost = ""
     tab = "1"
 
@@ -131,8 +132,14 @@ def perfil_view(request):
             )
 
         elif usuario and tab_nombre == "3":
-            # Guardados
-            print("-> tab guardados")
+            guardados = Guardados.objects.filter(
+                usuario=request.user
+            ).select_related(
+                'post',
+                'post__usuario'
+            ).prefetch_related(
+                'post__pack_set'
+            )
 
     # descripcion
     if request.method == 'POST':
@@ -186,6 +193,7 @@ def perfil_view(request):
         'cantidad_seguidores': cantidad_seguidores,
         'cantidas_seguidos': cantidad_seguidos,
         'repost':repost,
+        'guardados':guardados,
         'tab':tab
     }
 

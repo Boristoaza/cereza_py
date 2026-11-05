@@ -51,6 +51,7 @@ def guardar_post(request):
     if request.method == 'POST':
 
         id_post = request.POST.get('id_post_guardar')
+        # verificar_post = Post.objects.get(id=id_post)
 
         if id_post:
             messages.success(
