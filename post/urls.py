@@ -6,5 +6,7 @@ app_name = 'publicacion'
 
 urlpatterns = [
   path('publicar/',views.publicacion,name='publicar'),
-  path('compartir_post',views.compartir_publicacion,name='compartir_post')
+  path('compartir_post/',views.compartir_publicacion,name='compartir_post'),
+  path('guardar_post/', views.guardar_post,name='guardar_post'),
+
 ]

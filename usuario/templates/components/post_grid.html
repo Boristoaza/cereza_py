@@ -126,11 +126,23 @@
                     <input type="hidden" name="id_post_compartir" value="{{ i.id }}">
 
                     <button type="submit" class="submit boton-compartir">
-                        <i class="bi bi-send-fill"></i>
+                        <i class="bi bi-repeat"></i>
                     </button>
                 </form>
 
                 <span>214</span>
+
+                <form action="{% url 'publicacion:guardar_post' %}" method="post">
+
+                    {% csrf_token %}
+
+                    <input type="hidden" name="id_post_guardar" value="{{ i.id }}">
+
+                    <button type="submit" class="boton-guardar">
+                        <i class="bi bi-bookmark"></i>
+                    </button>
+
+                </form>
 
             </div>
             <style>
@@ -145,6 +157,24 @@
                     appearance: none;
                     -webkit-appearance: none;
                     cursor: pointer;
+                }
+
+                .boton-guardar {
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    margin: 0;
+                    outline: none;
+                    box-shadow: none;
+                    color: white;
+                    font-size: 22px;
+                    cursor: pointer;
+                    appearance: none;
+                    -webkit-appearance: none;
+                }
+
+                .boton-guardar:hover {
+                    color: #ffd700;
                 }
             </style>
 

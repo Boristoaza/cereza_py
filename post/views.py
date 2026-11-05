@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from .models import Post, Pack
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 @login_required
 def publicacion(request):
@@ -42,5 +43,21 @@ def compartir_publicacion(request):
             # descripcion=descripcion,
             post_original=verificar_post
         )
-
         return HttpResponse('Compartido con éxito')
+
+@login_required
+def guardar_post(request):
+
+    if request.method == 'POST':
+
+        id_post = request.POST.get('id_post_guardar')
+
+        if id_post:
+            messages.success(
+                request,
+                f'Este es el ID de la publicación: {id_post}'
+            )
+        else:
+            messages.error(request, 'No se recibió el ID de la publicación.')
+
+    return redirect('usuario:perfil')

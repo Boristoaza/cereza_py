@@ -175,7 +175,6 @@ def perfil_view(request):
         )
         .order_by('-id')
     )
-    print(perfil)
     
     contexto = {
         'perfil': perfil,

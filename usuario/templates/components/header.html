@@ -5,12 +5,10 @@
 {% block content %}
 <!-- CORRECCIÓN: El banner ahora está dentro del bloque de contenido de Django -->
 {% if perfil.banner %}
-<div class="profile-mini-banner"
-     style="background-image: url('/media/{{ perfil.banner }}');">
+<div class="profile-mini-banner" style="background-image: url('/media/{{ perfil.banner }}');">
 </div>
 {% else %}
-<div class="profile-mini-banner"
-     style="background: linear-gradient(90deg, #1f1f2e, #121212);">
+<div class="profile-mini-banner" style="background: linear-gradient(90deg, #1f1f2e, #121212);">
 </div>
 {% endif %}
 
@@ -19,13 +17,10 @@
     <section class="profile-header-info">
 
         {% if perfil.avatar %}
-            <img src="/media/{{ perfil.avatar }}"
-                 class="profile-avatar-big"
-                 alt="Avatar de {{ perfil.nombre_usuario }}">
+        <img src="/media/{{ perfil.avatar }}" class="profile-avatar-big" alt="Avatar de {{ perfil.nombre_usuario }}">
         {% else %}
-            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde"
-                 class="profile-avatar-big"
-                 alt="Avatar por defecto">
+        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde" class="profile-avatar-big"
+            alt="Avatar por defecto">
         {% endif %}
 
         <div class="profile-title-area">
@@ -60,46 +55,55 @@
     </section>
 
     <div class="action-buttons-area">
+        {% if messages %}
+        {% for message in messages %}
+
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+
+        {% endfor %}
+        {% endif %}
 
         {% if request.user != perfil.usuario %}
-            {% if not follow %}
-            <form id="from_follower" action="{% url 'seguir:seguir' %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="usuario" value="{{ perfil.usuario }}">
-                <button type="submit" class="tiktok-btn-primary">
-                    Seguir
-                </button>
-            </form>
-           {% else %}
-            <form id="from_follower" action="{% url 'seguir:seguir' %}" method="POST">
-               {% csrf_token %}
-               <input type="hidden" name="usuario" value="{{perfil.usuario}}">
-               <button type="submit" class="btn-siguiendo-dark">Siguiendo</button>
-            </form>
-            {% endif %}
+        {% if not follow %}
+        <form id="from_follower" action="{% url 'seguir:seguir' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="usuario" value="{{ perfil.usuario }}">
+            <button type="submit" class="tiktok-btn-primary">
+                Seguir
+            </button>
+        </form>
+        {% else %}
+        <form id="from_follower" action="{% url 'seguir:seguir' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="usuario" value="{{perfil.usuario}}">
+            <button type="submit" class="btn-siguiendo-dark">Siguiendo</button>
+        </form>
+        {% endif %}
 
         {% else %}
 
-            <form action="{% url 'usuario:logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit"
-                        class="btn btn-sm btn-outline-danger px-3 rounded-1 fw-bold">
-                    Cerrar sesión
-                </button>
-            </form>
+        <form action="{% url 'usuario:logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-outline-danger px-3 rounded-1 fw-bold">
+                Cerrar sesión
+            </button>
+        </form>
         {% endif %}
     </div>
-      <section class="tabs">
-        {% include "components/tabs.html"  %}
+    <section class="tabs">
+        {% include "components/tabs.html" %}
     </section>
-   <script src="{% static 'js/like.js' %}"></script>
-   <script src="{% static 'js/follower.js' %}"></script>
-   <script src="{% static 'js/tabs.js' %}" ></script>
+    <script src="{% static 'js/like.js' %}"></script>
+    <script src="{% static 'js/follower.js' %}"></script>
+    <script src="{% static 'js/tabs.js' %}"></script>
 
 </div>
 {% endblock %}
 
-<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+    aria-controls="offcanvasRight">Toggle right offcanvas</button>
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header">
