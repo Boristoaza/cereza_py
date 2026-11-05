@@ -39,7 +39,7 @@
     </form>
 
     <!-- BANNER -->
-    <form action="" method="post" enctype="multipart/form-data" class="tarjeta_edicion">
+    <form action="{% url 'usuario:perfil' %}" method="post" enctype="multipart/form-data" class="tarjeta_edicion">
         {% csrf_token %}
 
         <div class="info_campo">

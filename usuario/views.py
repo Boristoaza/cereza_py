@@ -77,8 +77,10 @@ def perfil_view(request):
 
     if request.method == 'POST':
         avatar = request.FILES.get('avatar')
-        banner = request.FILES.get('banner')
+        banner = request.FILES.get('archivo')
         biografia = request.POST.get('biografia')
+
+        print(banner)
 
         # Solo reemplaza las imágenes si el usuario subió nuevas
         if avatar:
@@ -91,6 +93,7 @@ def perfil_view(request):
             perfil.biografia = biografia
 
         perfil.save()
+
     # actaulizar avatar
     if request.method == 'POST':
         formulario = Avatar_from(
@@ -172,7 +175,8 @@ def perfil_view(request):
         )
         .order_by('-id')
     )
-
+    print(perfil)
+    
     contexto = {
         'perfil': perfil,
         'formulario':formulario,
