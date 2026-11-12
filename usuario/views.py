@@ -133,14 +133,30 @@ def perfil_view(request):
             )
 
         elif usuario and tab_nombre == "3":
-            guardados = Guardados.objects.filter(
-                usuario=request.user
-            ).select_related(
-                'post',
-                'post__usuario'
-            ).prefetch_related(
-                'post__pack_set'
-            )
+              guardados = Guardados.objects.filter(
+                    usuario=request.user
+                ).annotate(
+                    mi_like=Exists(
+                        Reaccion.objects.filter(
+                            usuario=request.user,
+                            post=OuterRef('post__pk')
+                        )
+                    ),
+                      mi_guardado=Exists(
+                    Guardados.objects.filter(
+                        usuario=request.user,
+                        post=OuterRef('pk')
+                    )
+                )
+                ).select_related(
+                    'post',
+                    'post__usuario',
+                    'post__usuario__perfil'
+                ).prefetch_related(
+                    'post__pack_set',
+                    'post__reaccion_set',
+                    'post__comentario_set'
+                )
 
     # descripcion
     if request.method == 'POST':
@@ -166,24 +182,6 @@ def perfil_view(request):
     cantidad_seguidores = seguidores.count()
     cantidad_seguidos = seguidos.count()
 
-    # publicaciones = (
-    #     Post.objects
-    #     .filter(
-    #         usuario=request.user,
-    #         post_original__isnull=True
-    #     )
-    #     .select_related(
-    #         'usuario',
-    #         'usuario__perfil'
-    #     )
-    #     .prefetch_related(
-    #         'pack_set',
-    #         'comentario_set',
-    #         'reaccion_set'
-    #     )
-    #     .order_by('-id') 
-    # )
-
     publicaciones = (
         Post.objects
         .filter(
@@ -193,6 +191,12 @@ def perfil_view(request):
         .annotate(
             mi_like=Exists(
                 Reaccion.objects.filter(
+                    usuario=request.user,
+                    post=OuterRef('pk')
+                )
+            ),
+          mi_guardado=Exists(
+                Guardados.objects.filter(
                     usuario=request.user,
                     post=OuterRef('pk')
                 )

@@ -145,9 +145,16 @@
 
                     <input type="hidden" name="id_post_guardar" value="{{ i.id }}">
 
-                    <button type="submit" class="boton-guardar">
-                        <i class="bi bi-bookmark"></i>
+                     <button type="submit" class="boton-guardar">
+
+                        {% if i.mi_guardado %}
+                            <i class="bi bi-bookmark-fill" style="color: #ffd700;"></i>
+                        {% else %}
+                            <i class="bi bi-bookmark"></i>
+                        {% endif %}
+
                     </button>
+
 
                 </form>
 

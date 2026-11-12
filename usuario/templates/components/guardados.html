@@ -9,18 +9,17 @@
 
     <div class="contenedor_post">
 
-        <!-- CONTENIDO DEL POST GUARDADO -->
         {% for x in i.post.pack_set.all %}
 
-            {% if x.video %}
-                <video class="imagen_post video_feed" muted loop playsinline>
-                    <source src="{{ x.video.url }}" type="video/mp4">
-                </video>
-            {% endif %}
+        {% if x.video %}
+        <video class="imagen_post video_feed" muted loop playsinline>
+            <source src="{{ x.video.url }}" type="video/mp4">
+        </video>
+        {% endif %}
 
-            {% if x.imagen %}
-                <img src="{{ x.imagen.url }}" class="imagen_post">
-            {% endif %}
+        {% if x.imagen %}
+        <img src="{{ x.imagen.url }}" class="imagen_post">
+        {% endif %}
 
         {% endfor %}
 
@@ -28,12 +27,10 @@
 
         <div class="info">
 
-            <!-- USUARIO QUE PUBLICÓ -->
             <h5>
                 {{ i.post.usuario.perfil.nombre_usuario }}
             </h5>
 
-            <!-- DESCRIPCIÓN DEL POST -->
             <p>
                 {{ i.post.descripcion }}
             </p>
@@ -42,82 +39,74 @@
 
         <div class="acciones">
 
-            <!-- AVATAR DEL AUTOR -->
+            <!-- AVATAR -->
             <div class="accion">
-
-                <img
-                    src="/media/{{ i.post.usuario.perfil.avatar }}"
-                    class="avatar"
-                >
-
+                <img src="/media/{{ i.post.usuario.perfil.avatar }}" class="avatar">
             </div>
 
             <!-- LIKE -->
             <div class="accion">
 
-                <form
-                    action="{% url 'reacciones:like' %}"
-                    method="post"
-                    class="form_like"
-                >
+                <form action="{% url 'reacciones:like' %}" method="post" class="form_like">
 
                     {% csrf_token %}
 
-                    <input
-                        type="hidden"
-                        name="id_post_like"
-                        value="{{ i.post.id }}"
-                    >
+                    <input type="hidden" name="id_post_like" value="{{ i.post.id }}">
 
                     <button type="submit" class="btn-corazon">
+
+                        {% if i.mi_like %}
+                        <i class="bi bi-heart-fill" style="color: #ff2a5f;"></i>
+                        {% else %}
                         <i class="bi bi-heart"></i>
+                        {% endif %}
+
                     </button>
 
                 </form>
 
-                <span>
-                    {{ i.post.reaccion_set.count }}
-                </span>
+                <span>{{ i.post.reaccion_set.count }}</span>
 
             </div>
 
             <!-- COMENTARIOS -->
             <div class="accion">
 
-                <i
-                    class="bi bi-chat-fill"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal{{ i.post.id }}"
-                    data-post-id="{{ i.post.id }}"
-                ></i>
+                <i class="bi bi-chat-fill" data-bs-toggle="modal" data-bs-target="#exampleModal{{ i.post.id }}"
+                    data-post-id="{{ i.post.id }}"></i>
 
-                <span>
-                    {{ i.post.comentario_set.count }}
-                </span>
+                <span>{{ i.post.comentario_set.count }}</span>
 
             </div>
 
             <!-- COMPARTIR -->
             <div class="accion">
 
-                <form
-                    action="{% url 'publicacion:compartir_post' %}"
-                    method="post"
-                >
+                <form action="{% url 'publicacion:compartir_post' %}" method="post">
 
                     {% csrf_token %}
 
-                    <input
-                        type="hidden"
-                        name="id_post_compartir"
-                        value="{{ i.post.id }}"
-                    >
+                    <input type="hidden" name="id_post_compartir" value="{{ i.post.id }}">
 
-                    <button
-                        type="submit"
-                        class="submit boton-compartir"
-                    >
+                    <button type="submit" class="boton-compartir">
                         <i class="bi bi-send-fill"></i>
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- QUITAR GUARDADO -->
+            <div class="accion">
+
+                <form action="{% url 'publicacion:guardar_post' %}" method="post">
+
+                    {% csrf_token %}
+
+                    <input type="hidden" name="id_post_guardar" value="{{ i.post.id }}">
+
+                    <button type="submit" class="boton-guardar">
+                        <i class="bi bi-bookmark-fill" style="color: #ffd700;"></i>
                     </button>
 
                 </form>
@@ -130,7 +119,7 @@
 
     {% empty %}
 
-        <p>No tienes publicaciones guardadas.</p>
+    <p>No tienes publicaciones guardadas.</p>
 
     {% endfor %}
 
@@ -139,34 +128,46 @@
 </div>
 
 <style>
+    .btn-corazon {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        color: white;
+        font-size: 22px;
+        cursor: pointer;
+    }
 
-.btn-corazon {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    color: white;
-    font-size: 22px;
-    cursor: pointer;
-}
+    .btn-corazon:hover {
+        color: #ff2a5f;
+    }
 
-.btn-corazon:hover {
-    color: #ff2a5f;
-}
+    .boton-compartir {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        outline: none;
+        box-shadow: none;
+        color: inherit;
+        appearance: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+    }
 
-.boton-compartir {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    outline: none;
-    box-shadow: none;
-    color: inherit;
-    appearance: none;
-    -webkit-appearance: none;
-    cursor: pointer;
-}
+    .boton-guardar {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        color: #ffd700;
+        font-size: 22px;
+        cursor: pointer;
+    }
 
+    .boton-guardar:hover {
+        color: white;
+    }
 </style>
 
 <script src="{% static 'js/comentarios.js' %}"></script>
