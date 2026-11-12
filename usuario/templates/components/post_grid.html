@@ -81,9 +81,16 @@
 
                     <input type="hidden" name="id_post_like" value="{{i.id}}">
 
+                    {% if i.mi_like %}
+                    <button type="submit" class="btn-corazon">
+                        <i class="bi bi-heart-fill" style="color: #ff2a5f;"></i>
+                    </button>
+                    {% else %}
                     <button type="submit" class="btn-corazon">
                         <i class="bi bi-heart"></i>
                     </button>
+                    {% endif %}
+
 
                 </form>
 

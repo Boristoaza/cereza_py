@@ -11,6 +11,8 @@ from django.shortcuts import get_object_or_404, render
 from reacciones.models import Reaccion
 from seguidores.models import Follower
 from .forms import Avatar_from , Biogradia_form
+from django.db.models import Exists, OuterRef
+
 
 def registro_view(request):
     if request.user.is_authenticated:
@@ -70,7 +72,6 @@ def main_view(request):
 
 @login_required
 def perfil_view(request):
-    # Obtiene el perfil o lo crea si es la primera vez
     perfil, created = Perfil.objects.get_or_create(
         usuario=request.user
     )
@@ -165,11 +166,37 @@ def perfil_view(request):
     cantidad_seguidores = seguidores.count()
     cantidad_seguidos = seguidos.count()
 
+    # publicaciones = (
+    #     Post.objects
+    #     .filter(
+    #         usuario=request.user,
+    #         post_original__isnull=True
+    #     )
+    #     .select_related(
+    #         'usuario',
+    #         'usuario__perfil'
+    #     )
+    #     .prefetch_related(
+    #         'pack_set',
+    #         'comentario_set',
+    #         'reaccion_set'
+    #     )
+    #     .order_by('-id') 
+    # )
+
     publicaciones = (
         Post.objects
         .filter(
             usuario=request.user,
             post_original__isnull=True
+        )
+        .annotate(
+            mi_like=Exists(
+                Reaccion.objects.filter(
+                    usuario=request.user,
+                    post=OuterRef('pk')
+                )
+            )
         )
         .select_related(
             'usuario',
@@ -182,7 +209,8 @@ def perfil_view(request):
         )
         .order_by('-id')
     )
-    
+
+
     contexto = {
         'perfil': perfil,
         'formulario':formulario,
