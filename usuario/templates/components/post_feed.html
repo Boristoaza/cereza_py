@@ -1,4 +1,3 @@
-
 {% load static %}
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -22,6 +21,10 @@
                     <video class="imagen_post video_feed" muted loop playsinline>
                         <source src="{{ pack.video.url }}" type="video/mp4">
                     </video>
+
+                    <button type="button" class="btn_video">
+                        <i class="bi bi-pause-circle-fill"></i>
+                    </button>
                 {% endif %}
 
             {% endfor %}
@@ -38,6 +41,10 @@
                     <video class="imagen_post video_feed" muted loop playsinline>
                         <source src="{{ pack.video.url }}" type="video/mp4">
                     </video>
+
+                    <button type="button" class="btn_video">
+                        <i class="bi bi-pause-circle-fill"></i>
+                    </button>
                 {% endif %}
 
             {% endfor %}
@@ -179,10 +186,25 @@
     color:#ffd700;
 }
 
+/* BOTON PAUSAR VIDEO */
+
+.btn_video {
+    position:absolute;
+    bottom:15px;
+    right:15px;
+    background:none;
+    border:none;
+    color:white;
+    font-size:30px;
+    cursor:pointer;
+    z-index:10;
+}
+
 </style>
 
 
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const videos = document.querySelectorAll(".video_feed");
@@ -195,12 +217,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (entry.isIntersecting) {
 
-                video.muted = false;
+                if (video.dataset.pausado !== "true") {
 
-                video.play().catch(() => {
-                    video.muted = true;
+                    video.muted = false;
                     video.play().catch(() => {});
-                });
+
+                }
 
             } else {
 
@@ -216,8 +238,39 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     videos.forEach(video => {
+
         observer.observe(video);
+
+        const boton = video.parentElement.querySelector(".btn_video");
+        const icono = boton.querySelector("i");
+
+        boton.addEventListener("click", function () {
+
+            if (video.paused) {
+
+                video.dataset.pausado = "false";
+                video.muted = false;
+
+                video.play().catch(() => {});
+
+                icono.classList.remove("bi-play-circle-fill");
+                icono.classList.add("bi-pause-circle-fill");
+
+            } else {
+
+                video.dataset.pausado = "true";
+
+                video.pause();
+
+                icono.classList.remove("bi-pause-circle-fill");
+                icono.classList.add("bi-play-circle-fill");
+
+            }
+
+        });
+
     });
 
 });
+
 </script>
