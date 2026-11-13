@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.models  import User
 from seguidores.models import Follower
-from post.models import Post , Pack
+from post.models import Post , Pack , Guardados
 from reacciones.models import Reaccion
 from comentario.models import Comentario
 from usuario.models import Perfil
+from django.db.models import Exists, OuterRef
+
 
 def feed_view(request):
 
@@ -20,21 +22,37 @@ def feed_view(request):
     posts = (
         Post.objects
         .filter(usuario_id__in=usuarios_feed)
+        .annotate(
+            mi_like=Exists(
+                Reaccion.objects.filter(
+                    usuario=request.user,
+                    post=OuterRef('pk')
+                )
+            ),
+            mi_guardado=Exists(
+                Guardados.objects.filter(
+                    usuario=request.user,
+                    post=OuterRef('pk')
+                )
+            )
+        )
         .select_related(
             'usuario',
             'usuario__perfil'
         )
         .prefetch_related(
-            'pack_set'
+            'pack_set',
+            'reaccion_set',
+            'comentario_set'
         )
-        .order_by('-fecha','-id')[:10]
+        .order_by('-fecha', '-id')[:10]
     )
 
     return render(
         request,
         'feed.html',
         {
-            'post': posts
+            'post_feed': posts
         }
     )
 

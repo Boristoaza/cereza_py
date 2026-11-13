@@ -12,6 +12,8 @@ from reacciones.models import Reaccion
 from seguidores.models import Follower
 from .forms import Avatar_from , Biogradia_form
 from django.db.models import Exists, OuterRef
+from django.db.models import Q
+
 
 
 def registro_view(request):
@@ -233,7 +235,6 @@ def perfil_view(request):
 
 @login_required
 def ver_perfil(request, usuario):
-    from django.db.models import Q
     # este es un buscador de usuarios
     perfil = get_object_or_404(
         Perfil,
