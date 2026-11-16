@@ -264,24 +264,65 @@ def ver_perfil(request, usuario):
     cantidad_seguidores = seguidores.count()
     cantidad_seguidos = seguidos.count()
 
-
-    # treae los post del usuario que se
-
+    # trae los post del usuario
     posts = (
-        Post.objects.filter(usuario=perfil.usuario)
-        .select_related('usuario', 'usuario__perfil')
-        .prefetch_related(
-            'comentario_set',
-            'reaccion_set',
-            'pack_set',
+        Post.objects
+        .filter(
+            usuario=perfil.usuario,
+            post_original__isnull=True
         )
-    ).order_by('-id')
+        .annotate(
+            mi_like=Exists(
+                Reaccion.objects.filter(
+                    usuario=request.user,
+                    post=OuterRef('pk')
+                )
+            ),
+            mi_guardado=Exists(
+                Guardados.objects.filter(
+                    usuario=request.user,
+                    post=OuterRef('pk')
+                )
+            )
+        )
+        .select_related(
+            'usuario',
+            'usuario__perfil'
+        )
+        .prefetch_related(
+            'pack_set',
+            'comentario_set',
+            'reaccion_set'
+        )
+        .order_by('-id')
+    )
 
+    # repost del usuario
+    repost = (
+        Post.objects
+        .filter(
+            usuario=perfil.usuario,
+            post_original__isnull=False
+        )
+        .select_related(
+            'usuario',
+            'post_original',
+            'post_original__usuario',
+            'post_original__usuario__perfil'
+        )
+        .prefetch_related(
+            'post_original__pack_set',
+            'post_original__reaccion_set',
+            'post_original__comentario_set'
+        )
+        .order_by('-id')
+    )
 
     contexto = {
-        'follow':verificar_seguidor,
+        'follow': verificar_seguidor,
         'perfil': perfil,
         'posts': posts,
+        'repost': repost,
         'seguidos': seguidos,
         'seguidores': seguidores,
         'cantidad_seguidores': cantidad_seguidores,
@@ -294,36 +335,4 @@ def ver_perfil(request, usuario):
 @login_required
 def tabs(request, id):
     print(id)
-
-    # if id == 2:
-
-    #     usuario = request.user
-
-    #     repost = (
-    #         Post.objects
-    #         .filter(
-    #             usuario=usuario,
-    #             post_original__isnull=False
-    #         )
-    #         .select_related(
-    #             'usuario',
-    #             'usuario__perfil',
-    #             'post_original',
-    #             'post_original__usuario',
-    #             'post_original__usuario__perfil'
-    #         )
-    #         .prefetch_related(
-    #             'post_original__pack_set'
-    #         )
-    #         .order_by('-id')
-    #     )
-
-    #     return render(
-    #         request,
-    #         'post_grid.html',
-    #         {
-    #             'repost': repost
-    #         }
-    #     )
-
     return redirect('usuario:perfil')

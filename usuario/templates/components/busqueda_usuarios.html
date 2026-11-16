@@ -1,3 +1,4 @@
+
 <div class="main-search-content">
     <div class="search-container-box">
 
@@ -14,33 +15,25 @@
                     <div class="d-flex align-items-center gap-3">
 
                         {% if i.avatar %}
-                            <img
-                                src="{{ i.avatar.url }}"
-                                class="search-avatar"
-                                alt="Avatar"
-                            >
+                            <img src="{{ i.avatar.url }}" class="search-avatar" alt="Avatar">
                         {% else %}
-                            <img
-                                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde"
-                                class="search-avatar"
-                                alt="Avatar por defecto"
-                            >
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde" class="search-avatar" alt="Avatar por defecto">
                         {% endif %}
 
                         <div>
                             <h6 class="mb-0 fw-bold text-white" style="font-size: 1.05rem;">
-                                {{ i.nombre_usuario }}
+                                {{ i.obtener_nombre }}
                             </h6>
 
                             <p class="mb-0 text-secondary small">
-                                ID de perfil: #{{ i.nombre_usuario }}
+                                @{{ i.usuario.username }}
                             </p>
                         </div>
 
                     </div>
 
                     <a
-                        href="/ver_perfil/{{ i.nombre_usuario }}"
+                        href="{% url 'usuario:ver_perfil' i.usuario.username %}"
                         class="tiktok-btn-primary"
                     >
                         <i class="bi bi-person-fill"></i>
@@ -52,13 +45,10 @@
             {% empty %}
 
                 <div class="text-center py-5 opacity-50">
-
                     <i class="bi bi-people fs-1"></i>
-
                     <p class="mt-3">
                         No se encontraron usuarios que coincidan con la búsqueda.
                     </p>
-
                 </div>
 
             {% endfor %}
